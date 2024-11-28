@@ -1,0 +1,61 @@
+* {
+    font-family: 'Poppins', sans-serif;
+    background: transparent;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #13072E, #3f2182) !important;
+    
+}
+
+.modal-tittle,
+.modal-header,
+.modal-body,
+.modal-form,
+.modal-footer,
+.modal-title,
+.form-label,
+.mb-3 {
+    background-color: transparent;
+    color: white;
+}
+
+
+
+.btn-primary {
+    font-family: 'Poppins';
+    font-weight: 600;
+    --bs-btn-bg: white;
+    --bs-btn-color: #13072E;
+    --bs-btn-border-color: #13072E;
+    --bs-btn-hover-bg: #13072E;
+    --bs-btn-hover-color: white;
+    --bs-btn-hover-border-color: white;
+    --bs-btn-border-width: 0.1rem;
+    --bs-btn-active-bg: white;
+    --bs-btn-active-border-color: white;
+    --bs-btn-disabled-bg: white;
+    --bs-btn-disabled-border-color: white;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.btn-secondary {
+    font-family: 'Poppins';
+    font-weight: 600;
+    --bs-btn-bg: #13072E;
+    --bs-btn-color: white;
+    --bs-btn-border-color: #13072E;
+    --bs-btn-hover-bg: white;
+    --bs-btn-hover-color: #13072E;
+    --bs-btn-hover-border-color: #13072E;
+    --bs-btn-border-width: 0.1rem;
+    --bs-btn-active-bg: #13072E;
+    --bs-btn-active-border-color: #13072E;
+    --bs-btn-disabled-bg: #13072E;
+    --bs-btn-disabled-border-color: #13072E;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
