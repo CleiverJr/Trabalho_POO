@@ -1,0 +1,59 @@
+* {
+    background-color: #13072E;
+}
+
+.container{
+    background-color: #13072E !important;
+}
+
+header {
+    margin-top: 1rem;
+    background-color: #13072E !important;
+}
+
+body {
+    background-color: #13072E;
+}
+
+.navbar-light {
+    background-color: #13072E !important;
+}
+
+
+
+.navbar-brand,
+.nav-link {
+    font-family: 'Poppins' !important;
+    color: white !important;
+
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.navbar-toggler {
+    color: transparent;
+}
+
+.bi {
+    background-color: transparent;
+    color: #13072E;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-left: 1rem;
+    border-radius: 1rem;
+}
+
+.logo {
+    margin-right: 0.5rem;
+}
+
+.navLinks {
+    display: flex;
+    justify-self: start;
+}
+
+.navbar-collapse {
+    padding-left: 3rem;
+}
