@@ -2,7 +2,7 @@ from app import app
 from flask import request, render_template, jsonify, make_response
 
 @app.route("/") 
-def home():
+def main():
     return render_template('index.html') # Está correto
 
 @app.route("/index") 
@@ -10,12 +10,12 @@ def index():
     return render_template('index.html') # Está correto
 
 @app.route("/home") 
-def index():
+def home():
     return render_template('index.html') # Está correto
 
-@app.route("/login")
-def login():
-    return render_template("login.html")
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 @app.route("/signin") 
 def signin():
