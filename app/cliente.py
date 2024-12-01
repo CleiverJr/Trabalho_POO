@@ -7,7 +7,7 @@ def contract():
 
 @app.route("/predict") 
 def predict():
-    return render_template('predict.html')
+    return render_template('cliente/predict.html')
 
 @app.route("/suport")
 def suport():
