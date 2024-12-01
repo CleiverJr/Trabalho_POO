@@ -11,4 +11,4 @@ def predict():
 
 @app.route("/suport")
 def suport():
-    return render_template('cliente/suport')
+    return render_template('cliente/suport.html')

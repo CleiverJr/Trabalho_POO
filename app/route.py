@@ -25,9 +25,13 @@ def login():
 def logincli():
     email = request.form.get('email')  
     password = request.form.get('password')
-        
+    
     if email == "funcionario@gmail.com" and password == "123":
+        session['user_email'] = email  # Salva o e-mail na sessão
+        return redirect(url_for('attcontract'))
+    elif email == "cliente@gmail.com" and password == "123":
+        session['user_email'] = email  # Salva o e-mail na sessão
         return redirect(url_for('predict'))
     else:        
-        return "Login inválido!", 401 # Retorna código de status HTTP 401 (não autorizado)
-    
+        return "Login inválido!", 401
+
