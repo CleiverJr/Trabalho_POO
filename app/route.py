@@ -32,8 +32,8 @@ def loginconfirm():
             session['user_type'] = 'cliente'
             return redirect(url_for('cliente_routes.analise'))
         elif username == 'funcionario':
-            session['user_type'] = 'funcionario'
-            return redirect(url_for('funcionario_routes.cadastro'))
+            session['user_type'] = 'funcionario@gmail.com'
+            return redirect(url_for('/attcli'))
         else:
             return "Login inválido!"
     
