@@ -3,5 +3,80 @@
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/signupcli.css') }}"> {% endblock %}
 {% block content %}
+<div class="container mt-5">
+    <!-- Título e subtítulo -->
+    <div class="text-center mb-4">
+        <h1>Criar uma Conta</h1>
+        <h5 class="text-muted">Cliente</h5>
+    </div>
 
+    <!-- Formulário -->
+    <form>
+        <!-- Primeira fileira -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="campo1" class="form-label">Campo 1</label>
+                <input type="text" class="form-control" id="campo1" placeholder="Digite aqui">
+            </div>
+            <div class="col-md-3">
+                <label for="campo2" class="form-label">Campo 2</label>
+                <input type="text" class="form-control" id="campo2" placeholder="Digite aqui">
+            </div>
+            <div class="col-md-3">
+                <label for="campo3" class="form-label">Campo 3</label>
+                <input type="text" class="form-control" id="campo3" placeholder="Digite aqui">
+            </div>
+            <div class="col-md-3">
+                <label for="campo4" class="form-label">Campo 4</label>
+                <input type="text" class="form-control" id="campo4" placeholder="Digite aqui">
+            </div>
+        </div>
+
+        <!-- Segunda fileira -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="campo5" class="form-label">Campo 5</label>
+                <input type="text" class="form-control" id="campo5" placeholder="Digite aqui">
+            </div>
+            <div class="col-md-3">
+                <label for="campo6" class="form-label">Campo 6</label>
+                <input type="text" class="form-control" id="campo6" placeholder="Digite aqui">
+            </div>
+            <div class="col-md-3">
+                <label for="campo7" class="form-label">Campo 7</label>
+                <input type="text" class="form-control" id="campo7" placeholder="Digite aqui">
+            </div>
+            <div class="col-md-3">
+                <label for="campo8" class="form-label">Campo 8</label>
+                <input type="text" class="form-control" id="campo8" placeholder="Digite aqui">
+            </div>
+        </div>
+
+        <!-- Terceira fileira -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <label for="campo9" class="form-label">Campo 9</label>
+                <input type="text" class="form-control" id="campo9" placeholder="Digite aqui">
+            </div>
+            <div class="col-md-3">
+                <label for="campo10" class="form-label">Campo 10</label>
+                <input type="text" class="form-control" id="campo10" placeholder="Digite aqui">
+            </div>
+            <div class="col-md-3">
+                <label for="campo11" class="form-label">Campo 11</label>
+                <input type="text" class="form-control" id="campo11" placeholder="Digite aqui">
+            </div>
+            <div class="col-md-3">
+                <label for="campo12" class="form-label">Campo 12</label>
+                <input type="text" class="form-control" id="campo12" placeholder="Digite aqui">
+            </div>
+        </div>
+
+        <!-- Botões -->
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-outline-primary me-2">Contrato</button>
+            <button type="submit" class="btn btn-primary">Cadastrar-se</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
