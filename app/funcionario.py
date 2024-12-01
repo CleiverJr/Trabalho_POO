@@ -2,7 +2,7 @@ from app import app
 from flask import request, render_template, jsonify, make_response
 
 @app.route("/signupcli", methods=['POST']) 
-def signup():
+def signupcli():
     user = request.form['user']
     password = request.form['pswrd']
     cnpj = request.form['cnpj']
@@ -20,7 +20,7 @@ def signup():
     receita=receita, prop_valor=prop_valor)
 
 @app.route("/signupfunc", methods=['POST']) 
-def signup():
+def signupfunc():
     user = request.form['user']
     password = request.form['pswrd']
     cpf = request.form['cpf']
@@ -38,7 +38,7 @@ def signup():
     cep=cep, cargo=cargo, salario=salario, formacao=formacao, idade=idade, atuacao=atuacao, tipo=tipo, grau=grau)
 
 @app.route ("/attcli", methods=['PUT'])
-def att():
+def attcli():
     user = request.form['user']
     password = request.form['pswrd']
     cnpj = request.form['cnpj']
@@ -56,7 +56,7 @@ def att():
     receita=receita, prop_valor=prop_valor)
 
 @app.route ("/attfunc", methods=['PUT'])
-def att():
+def attfunc():
     user = request.form['user']
     password = request.form['pswrd']
     cpf = request.form['cpf']
