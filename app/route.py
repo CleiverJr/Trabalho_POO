@@ -22,19 +22,12 @@ def login():
     return render_template("login.html")
 
 @app.route("/login", methods=['POST'])
-def loginconfirm():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+def logincli():
+    email = request.form.get('email')  
+    password = request.form.get('password')
         
-        # Simulação de autenticação
-        if username == 'cliente':
-            session['user_type'] = 'cliente'
-            return redirect(url_for('cliente_routes.analise'))
-        elif username == 'funcionario':
-            session['user_type'] = 'funcionario'
-            return redirect(url_for('funcionario_routes.cadastro'))
-        else:
-            return "Login inválido!"
+    if email == "funcionario@gmail.com" and password == "123":
+        return redirect(url_for('predict'))
+    else:        
+        return "Login inválido!", 401 # Retorna código de status HTTP 401 (não autorizado)
     
-    return render_template('login.html')
