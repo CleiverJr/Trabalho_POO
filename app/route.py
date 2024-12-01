@@ -29,10 +29,10 @@ def logincli():
     
     if email == "funcionario@gmail.com" and password == "123":
         session['user_email'] = email  # Salva o e-mail na sessão
-        return redirect(url_for('attcontract'))
+        return redirect('/attcli')
     elif email == "cliente@gmail.com" and password == "123":
         session['user_email'] = email  # Salva o e-mail na sessão
-        return redirect(url_for('predict'))
+        return redirect('/predict')
     else:        
         return "Login inválido!", 401
 
