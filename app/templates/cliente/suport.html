@@ -3,5 +3,27 @@
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/suport.css') }}"> {% endblock %}
 {% block content %}
-
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-center mb-4">Tela de Suporte</h2>
+                <form>
+                    <!-- Caixa de texto menor -->
+                    <div class="form-group">
+                        <label for="assunto" class="form-label">Assunto:</label>
+                        <input type="text" class="form-control" id="assunto" placeholder="Digite o assunto">
+                    </div>
+                    <!-- Caixa de texto maior -->
+                    <div class="form-group">
+                        <label for="descricao" class="form-label">Descreva o problema:</label>
+                        <textarea class="form-control" id="descricao" rows="6" placeholder="Descreva o problema detalhadamente"></textarea>
+                    </div>
+                    <!-- Botão de envio -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
