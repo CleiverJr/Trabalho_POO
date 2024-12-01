@@ -3,5 +3,12 @@
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/contract.css') }}"> {% endblock %}
 {% block content %}
+    <div class="container text-center my-5">
+        <h1 class="mb-4">Informações do Contrato e Produto</h1>
+        <p>Insira aqui as informações relacionadas ao contrato e produto que deseja apresentar.</p>
+    </div>
 
+    <div class="text-center mb-4">
+        <button class="btn btn-download">Baixar PDF do contrato</button>
+    </div>
 {% endblock %}
