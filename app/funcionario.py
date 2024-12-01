@@ -15,7 +15,7 @@ def signupcli():
     capital = request.form['capital']
     receita = request.form['receita']
     prop_valor = request.form['prop_valor']
-    return render_template('signupcli.html', user=user, password=password, cnpj=cnpj, telefone=telefone, 
+    return render_template('funcionario/signupcli.html', user=user, password=password, cnpj=cnpj, telefone=telefone, 
     email=email, sede=sede, industria=industria, departamentos=departamentos, n_func=n_func, capital=capital,
     receita=receita, prop_valor=prop_valor)
 
@@ -34,7 +34,7 @@ def signupfunc():
     atuacao = request.form['atuacao']
     tipo = request.form['tipo']
     grau = request.form['grau']
-    return render_template('signupfunc.html', user=user, password=password, cpf=cpf, telefone=telefone, email=email,
+    return render_template('funcionario/signupfunc.html', user=user, password=password, cpf=cpf, telefone=telefone, email=email,
     cep=cep, cargo=cargo, salario=salario, formacao=formacao, idade=idade, atuacao=atuacao, tipo=tipo, grau=grau)
 
 @app.route ("/attcli", methods=['PUT'])
@@ -51,7 +51,7 @@ def attcli():
     capital = request.form['capital']
     receita = request.form['receita']
     prop_valor = request.form['prop_valor']
-    return render_template('attcli', user=user, password=password, cnpj=cnpj, telefone=telefone, 
+    return render_template('funcionario/attcli.html', user=user, password=password, cnpj=cnpj, telefone=telefone, 
     email=email, sede=sede, industria=industria, departamentos=departamentos, n_func=n_func, capital=capital,
     receita=receita, prop_valor=prop_valor)
 
@@ -70,7 +70,7 @@ def attfunc():
     atuacao = request.form['atuacao']
     tipo = request.form['tipo']
     grau = request.form['grau']
-    return render_template('attfunc', user=user, password=password, cpf=cpf, telefone=telefone, email=email,
+    return render_template('funcionario/attfunc', user=user, password=password, cpf=cpf, telefone=telefone, email=email,
     cep=cep, cargo=cargo, salario=salario, formacao=formacao, idade=idade, atuacao=atuacao, tipo=tipo, grau=grau)
 
 @app.route("/attContract.html") 

@@ -1,7 +1,66 @@
 {% extends "templs/nav.html" %}
-{% block title %} Sobre nós {% endblock %}
+{% block title %} Atualizar {% endblock %}
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/attcli.css') }}"> {% endblock %}
 {% block content %}
+    <div class="form-container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Atualizar Cliente</h2>
+            <button class="btn btn-secondary btn-sm">⇆ Atualizar Funcionário</button>
+        </div>
+        <h5>Nome</h5>
+        <input type="text" class="form-control mb-3" placeholder="Pesquisar nome do cliente">
 
+        <div class="row">
+            <div class="col-md-4">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="nome" placeholder="Digite o nome">
+            </div>
+            <div class="col-md-4">
+                <label for="cnpj" class="form-label">CNPJ</label>
+                <input type="text" class="form-control" id="cnpj" placeholder="Digite o CNPJ">
+            </div>
+            <div class="col-md-4">
+                <label for="telefone" class="form-label">Telefone</label>
+                <input type="text" class="form-control" id="telefone" placeholder="Digite o telefone">
+            </div>
+            <div class="col-md-4">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Digite o email">
+            </div>
+            <div class="col-md-4">
+                <label for="sede" class="form-label">Sede</label>
+                <input type="text" class="form-control" id="sede" placeholder="Digite a sede">
+            </div>
+            <div class="col-md-4">
+                <label for="industria" class="form-label">Indústria</label>
+                <input type="text" class="form-control" id="industria" placeholder="Digite a indústria">
+            </div>
+            <div class="col-md-4">
+                <label for="departamentos" class="form-label">Departamentos</label>
+                <input type="text" class="form-control" id="departamentos" placeholder="Digite os departamentos">
+            </div>
+            <div class="col-md-4">
+                <label for="n-funcionarios" class="form-label">Nº de Funcionários</label>
+                <input type="number" class="form-control" id="n-funcionarios" placeholder="Digite o nº de funcionários">
+            </div>
+            <div class="col-md-4">
+                <label for="capital" class="form-label">Capital</label>
+                <input type="text" class="form-control" id="capital" placeholder="Digite o capital">
+            </div>
+            <div class="col-md-4">
+                <label for="receita" class="form-label">Receita</label>
+                <input type="text" class="form-control" id="receita" placeholder="Digite a receita">
+            </div>
+            <div class="col-md-4">
+                <label for="proposta" class="form-label">Proposta de Valor</label>
+                <input type="text" class="form-control" id="proposta" placeholder="Digite a proposta de valor">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <button class="btn btn-primary me-2">Contrato</button>
+            <button class="btn btn-success">Atualizar</button>
+        </div>
+    </div>
 {% endblock %}
