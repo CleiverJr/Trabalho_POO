@@ -73,6 +73,6 @@ def attfunc():
     return render_template('funcionario/attfunc', user=user, password=password, cpf=cpf, telefone=telefone, email=email,
     cep=cep, cargo=cargo, salario=salario, formacao=formacao, idade=idade, atuacao=atuacao, tipo=tipo, grau=grau)
 
-@app.route("/attContract.html") 
+@app.route("/attcontract") 
 def attContract():
     return render_template('attContract.html')

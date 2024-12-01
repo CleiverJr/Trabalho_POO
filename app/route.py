@@ -22,19 +22,17 @@ def login():
     return render_template("login.html")
 
 @app.route("/login", methods=['POST'])
-def loginconfirm():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        
-        # Simulação de autenticação
-        if username == 'cliente':
-            session['user_type'] = 'cliente'
-            return redirect(url_for('cliente_routes.analise'))
-        elif username == 'funcionario':
-            session['user_type'] = 'funcionario@gmail.com'
-            return redirect(url_for('/attcli'))
-        else:
-            return "Login inválido!"
+
+def logincli():
+    email = request.form.get('email')  
+    password = request.form.get('password')
     
-    return render_template('login.html')
+    if email == "funcionario@gmail.com" and password == "123":
+        session['user_email'] = email  # Salva o e-mail na sessão
+        return redirect(url_for('attcontract'))
+    elif email == "cliente@gmail.com" and password == "123":
+        session['user_email'] = email  # Salva o e-mail na sessão
+        return redirect(url_for('predict'))
+    else:        
+        return "Login inválido!", 401
+

@@ -1,23 +1,24 @@
 {% extends "templs/nav.html" %}
 {% block title %} Sobre nós {% endblock %}
 {% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}"> {% endblock %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
 {% block content %}
-    <div class="card p-4" style="width: 22rem;">
-        <h2 class="text-center bg-transparent text-white-custom mb-4">Login</h2>
-        <form>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Digite seu email" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="password" placeholder="Digite sua senha" required>
-            </div>
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Login</button>
-                <button type="button" class="btn btn-secondary">Cadastro</button>
-            </div>
-        </form>
-    </div>
+<div class="card p-4" style="width: 22rem;">
+    <h2 class="text-center bg-transparent text-white mb-4">Login</h2>
+    <form class="d-flex justify-content-center flex-column" action="/login" method="POST">
+        <div class="mb-3 bg-transparent" style="width: 50%; margin-left: auto; margin-right: auto;">
+            <label for="email" class="form-label text-white text-center bg-transparent">Email</label>
+            <input type="email" name="email" class="form-control" id="email" placeholder="Digite seu email" required>
+        </div>
+        <div class="mb-3 bg-transparent" style="width: 50%; margin-left: auto; margin-right: auto;">
+            <label for="password" class="form-label text-white text-center bg-transparent">Senha</label>
+            <input type="password" name="password" class="form-control" id="password" placeholder="Digite sua senha" required>
+        </div>
+        <div class="d-flex justify-content-center bg-transparent">
+            <button type="submit" class="btn UIButton" style="width: 30%;">Login</button>
+        </div>
+    </form>
+</div>
+
 {% endblock %}

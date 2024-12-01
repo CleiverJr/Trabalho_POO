@@ -1,29 +1,25 @@
-{% extends "templs/nav.html" %}
-{% block title %} Sobre nós {% endblock %}
-{% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/suport.css') }}"> {% endblock %}
+{% extends "templs/navcli.html" %}
+{% block title %} Suporte {% endblock %}
+{% block style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/suport.css') }}"> {% endblock %}
 {% block content %}
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h2 class="text-center mb-4">Tela de Suporte</h2>
-                <form>
-                    <!-- Caixa de texto menor -->
-                    <div class="form-group">
-                        <label for="assunto" class="form-label">Assunto:</label>
-                        <input type="text" class="form-control" id="assunto" placeholder="Digite o assunto">
-                    </div>
-                    <!-- Caixa de texto maior -->
-                    <div class="form-group">
-                        <label for="descricao" class="form-label">Descreva o problema:</label>
-                        <textarea class="form-control" id="descricao" rows="6" placeholder="Descreva o problema detalhadamente"></textarea>
-                    </div>
-                    <!-- Botão de envio -->
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Enviar</button>
-                    </div>
-                </form>
-            </div>
+    <form class="d-flex justify-content-center flex-column w-100 align-items-center">
+        <h2 class="text-center mb-4 text-white">Tela de Suporte</h2>
+        <div class="form-group w-75">
+            <textarea class="form-control" id="descricao" rows="2"
+                placeholder="Assunto:"></textarea>
         </div>
+
+        <div class="form-group w-75  mt-4">
+            <textarea class="form-control" id="descricao" rows="6"
+                placeholder="Descreva o problema:"></textarea>
+        </div>
+
+        <div class="text-center d-flex justify-content-center mt-3">
+            <button type="submit" class="btn UIButton">Enviar</button>
+        </div>
+    </form>
+    <div class="d-flex justify-content-center flex-column w-100 align-items-center">
+        <p class="text-white fw-bold">Email de Suporte:</p> 
+        <p class="text-white fw-nomral">suporte@bcdp.com.br</p>
     </div>
 {% endblock %}
