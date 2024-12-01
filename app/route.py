@@ -17,8 +17,12 @@ def home():
 def about():
     return render_template("about.html")
 
-@app.route("/login", methods=['POST'])
+@app.route("/login")
 def login():
+    return render_template("login.html")
+
+@app.route("/login", methods=['POST'])
+def loginconfirm():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
