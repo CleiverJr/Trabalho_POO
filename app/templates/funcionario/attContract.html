@@ -1,7 +1,107 @@
-{% extends "templs/nav.html" %}
-{% block title %} Sobre nós {% endblock %}
+{% extends "templs/navfunc.html" %}
+{% block title %} Atualizar Contrato {% endblock %}
 {% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/attContract.css') }}"> {% endblock %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/att.css') }}"> {% endblock %}
 {% block content %}
+<form id="dynamicForm" class="w-100">
+    <!-- Dropdown Principal -->
+    <div class="mb-5 w-50">
+        <label for="userType" class="form-label text-white fs-2 fw-bold mb-3">Selecione o Contrato do Cliente:</label>
+        <select id="userType" class="form-select w-50" onchange="updateForm()">
+            <option value="Cliente1">Contrato Cliente 1</option>
+            <option value="Cliente2">Contrato Cliente 2</option>
+        </select>
+    </div>
+
+    <!-- Inputs para Cliente -->
+    <div id="clienteInputs">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteNecessidade" placeholder="Necessidade">
+                </div>
+                <div class="mb-5">
+                    <input type="email" class="form-control" id="clientePreco" placeholder="Preço">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteDuracao" placeholder="Duração">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteManutencao" placeholder="Manutenção">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteFrequenciaAtualizacao" placeholder="Frequência Atualização">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteTamanhoBD" placeholder="Tamanho do banco de dados">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteHospedagem" placeholder="Serviço de hospedagem">
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-4 gap-3">
+            <button type="button" class="btn UIButton" onclick="adicionarCliente()">Cadastrar Cliente</button>
+        </div>
+    </div>
+
+    <!-- Inputs para Funcionário -->
+    <div id="funcionarioInputs" class="hidden">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteNecessidade" placeholder="Necessidade">
+                </div>
+                <div class="mb-5">
+                    <input type="email" class="form-control" id="clientePreco" placeholder="Preço">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteDuracao" placeholder="Duração">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteManutencao" placeholder="Manutenção">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteFrequenciaAtualizacao" placeholder="Frequência Atualização">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteTamanhoBD" placeholder="Tamanho do banco de dados">
+                </div>
+                <div class="mb-5">
+                    <input type="text" class="form-control" id="clienteHospedagem" placeholder="Serviço de hospedagem">
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-4 gap-3">
+            <button type="button" class="btn UIButton" onclick="adicionarFuncionario()">Cadastrar Funcionário</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block script %}
+<script>
+    function updateForm() {
+        const userType = document.getElementById('userType').value;
+        const clienteInputs = document.getElementById('clienteInputs');
+        const funcionarioInputs = document.getElementById('funcionarioInputs');
+
+        if (userType === 'Cliente') {
+            clienteInputs.classList.remove('hidden');
+            funcionarioInputs.classList.add('hidden');
+        } else if (userType === 'Funcionário') {
+            funcionarioInputs.classList.remove('hidden');
+            clienteInputs.classList.add('hidden');
+        }
+    }
+
+    function adicionarCliente() {
+        alert('Contrato Cliente acionado');
+    }
+
+    function adicionarFuncionario() {
+        alert('Contrato Funcionário acionado');
+    }
+
+</script>
 
 {% endblock %}

@@ -1,6 +1,18 @@
 from app import app
 from flask import request, render_template, jsonify, make_response
 
+@app.route("/signup")
+def signup():
+    return render_template('funcionario/signup.html')
+
+@app.route("/attcontract") 
+def attcontract():
+    return render_template('funcionario/attcontract.html')
+
+@app.route("/att")
+def att():
+    return render_template('funcionario/att.html')
+
 @app.route("/signupcli", methods=['POST']) 
 def signupcli():
     user = request.form['user']
@@ -73,6 +85,6 @@ def attfunc():
     return render_template('funcionario/attfunc', user=user, password=password, cpf=cpf, telefone=telefone, email=email,
     cep=cep, cargo=cargo, salario=salario, formacao=formacao, idade=idade, atuacao=atuacao, tipo=tipo, grau=grau)
 
-@app.route("/attcontract") 
+@app.route("/attContract") 
 def attContract():
-    return render_template('attContract.html')
+    return render_template('funcionario/attContract.html')
