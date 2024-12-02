@@ -1,23 +1,25 @@
 from app import app
 from flask import request, render_template, jsonify, make_response
 
-@app.route("/signupcli", methods=['POST']) 
+@app.route("/signupcli", methods=['GET', 'POST'])
 def signupcli():
-    user = request.form['user']
-    password = request.form['pswrd']
-    cnpj = request.form['cnpj']
-    telefone = request.form['telefone']
-    email = request.form['email']
-    sede = request.form['sede']
-    industria = request.form['industria']
-    departamentos = request.form['departamentos']
-    n_func = request.form['n_func']
-    capital = request.form['capital']
-    receita = request.form['receita']
-    prop_valor = request.form['prop_valor']
-    return render_template('funcionario/signupcli.html', user=user, password=password, cnpj=cnpj, telefone=telefone, 
-    email=email, sede=sede, industria=industria, departamentos=departamentos, n_func=n_func, capital=capital,
-    receita=receita, prop_valor=prop_valor)
+    if request.method == 'POST':
+        user = request.form.get('user')
+        password = request.form.get('pswrd')
+        cnpj = request.form.get('cnpj')
+        telefone = request.form.get('telefone')
+        email = request.form.get('email')
+        sede = request.form.get('sede')
+        industria = request.form.get('industria')
+        departamentos = request.form.get('departamentos')
+        n_func = request.form.get('n_func')
+        capital = request.form.get('capital')
+        receita = request.form.get('receita')
+        prop_valor = request.form.get('prop_valor')
+
+        return render_template('funcionario/signupcli.html',user=user,password=password,cnpj=cnpj,telefone=telefone,email=email,sede=sede,industria=industria,departamentos=departamentos,n_func=n_func, capital=capital, receita=receita, prop_valor=prop_valor)
+    return render_template('funcionario/signupcli.html')
+
 
 @app.route("/signupfunc", methods=['POST']) 
 def signupfunc():

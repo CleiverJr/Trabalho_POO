@@ -1,7 +1,8 @@
 {% extends "templs/nav.html" %}
 {% block title %} Sobre nós {% endblock %}
 {% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/signupcli.css') }}"> {% endblock %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/signupcli.css') }}"> 
+{% endblock %}
 {% block content %}
 <div class="container mt-5">
     <!-- Título e subtítulo -->
@@ -11,64 +12,64 @@
     </div>
 
     <!-- Formulário -->
-    <form>
+    <form method="POST" action="{{ url_for('signupcli') }}">
         <!-- Primeira fileira -->
         <div class="row mb-3">
             <div class="col-md-3">
-                <label for="campo1" class="form-label">Campo 1</label>
-                <input type="text" class="form-control" id="campo1" placeholder="Digite aqui">
+                <label for="user" class="form-label">Usuário</label>
+                <input type="text" class="form-control" id="user" name="user" placeholder="Digite o usuário">
             </div>
             <div class="col-md-3">
-                <label for="campo2" class="form-label">Campo 2</label>
-                <input type="text" class="form-control" id="campo2" placeholder="Digite aqui">
+                <label for="pswrd" class="form-label">Senha</label>
+                <input type="password" class="form-control" id="pswrd" name="pswrd" placeholder="Digite a senha">
             </div>
             <div class="col-md-3">
-                <label for="campo3" class="form-label">Campo 3</label>
-                <input type="text" class="form-control" id="campo3" placeholder="Digite aqui">
+                <label for="cnpj" class="form-label">CNPJ</label>
+                <input type="text" class="form-control" id="cnpj" name="cnpj" placeholder="Digite o CNPJ">
             </div>
             <div class="col-md-3">
-                <label for="campo4" class="form-label">Campo 4</label>
-                <input type="text" class="form-control" id="campo4" placeholder="Digite aqui">
+                <label for="telefone" class="form-label">Telefone</label>
+                <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Digite o telefone">
             </div>
         </div>
 
         <!-- Segunda fileira -->
         <div class="row mb-3">
             <div class="col-md-3">
-                <label for="campo5" class="form-label">Campo 5</label>
-                <input type="text" class="form-control" id="campo5" placeholder="Digite aqui">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Digite o email">
             </div>
             <div class="col-md-3">
-                <label for="campo6" class="form-label">Campo 6</label>
-                <input type="text" class="form-control" id="campo6" placeholder="Digite aqui">
+                <label for="sede" class="form-label">Sede</label>
+                <input type="text" class="form-control" id="sede" name="sede" placeholder="Digite a sede">
             </div>
             <div class="col-md-3">
-                <label for="campo7" class="form-label">Campo 7</label>
-                <input type="text" class="form-control" id="campo7" placeholder="Digite aqui">
+                <label for="industria" class="form-label">Indústria</label>
+                <input type="text" class="form-control" id="industria" name="industria" placeholder="Digite a indústria">
             </div>
             <div class="col-md-3">
-                <label for="campo8" class="form-label">Campo 8</label>
-                <input type="text" class="form-control" id="campo8" placeholder="Digite aqui">
+                <label for="departamentos" class="form-label">Departamentos</label>
+                <input type="text" class="form-control" id="departamentos" name="departamentos" placeholder="Digite os departamentos">
             </div>
         </div>
 
         <!-- Terceira fileira -->
         <div class="row mb-4">
             <div class="col-md-3">
-                <label for="campo9" class="form-label">Campo 9</label>
-                <input type="text" class="form-control" id="campo9" placeholder="Digite aqui">
+                <label for="n_func" class="form-label">Número de Funcionários</label>
+                <input type="number" class="form-control" id="n_func" name="n_func" placeholder="Digite o número">
             </div>
             <div class="col-md-3">
-                <label for="campo10" class="form-label">Campo 10</label>
-                <input type="text" class="form-control" id="campo10" placeholder="Digite aqui">
+                <label for="capital" class="form-label">Capital</label>
+                <input type="text" class="form-control" id="capital" name="capital" placeholder="Digite o capital">
             </div>
             <div class="col-md-3">
-                <label for="campo11" class="form-label">Campo 11</label>
-                <input type="text" class="form-control" id="campo11" placeholder="Digite aqui">
+                <label for="receita" class="form-label">Receita</label>
+                <input type="text" class="form-control" id="receita" name="receita" placeholder="Digite a receita">
             </div>
             <div class="col-md-3">
-                <label for="campo12" class="form-label">Campo 12</label>
-                <input type="text" class="form-control" id="campo12" placeholder="Digite aqui">
+                <label for="prop_valor" class="form-label">Proposta de Valor</label>
+                <input type="text" class="form-control" id="prop_valor" name="prop_valor" placeholder="Digite a proposta">
             </div>
         </div>
 
