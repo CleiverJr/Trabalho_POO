@@ -29,7 +29,7 @@ def logincli():
     
     if email == "funcionario@gmail.com" and password == "123":
         session['user_email'] = email  # Salva o e-mail na sessão
-        return redirect('/signupfunc')
+        return redirect('/signup')
     elif email == "cliente@gmail.com" and password == "123":
         session['user_email'] = email  # Salva o e-mail na sessão
         return redirect('/predict')
