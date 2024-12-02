@@ -1,7 +1,7 @@
 from app import app
 from flask import request, render_template, jsonify, make_response
 
-@app.route("/signupcli", methods=['GET', 'POST'])
+@app.route("/signup", methods=['GET', 'POST'])
 def signupcli():
     if request.method == 'POST':
         user = request.form.get('user')
@@ -17,11 +17,11 @@ def signupcli():
         receita = request.form.get('receita')
         prop_valor = request.form.get('prop_valor')
 
-        return render_template('funcionario/signupcli.html',user=user,password=password,cnpj=cnpj,telefone=telefone,email=email,sede=sede,industria=industria,departamentos=departamentos,n_func=n_func, capital=capital, receita=receita, prop_valor=prop_valor)
-    return render_template('funcionario/signupcli.html')
+        return render_template('funcionario/signup.html',user=user,password=password,cnpj=cnpj,telefone=telefone,email=email,sede=sede,industria=industria,departamentos=departamentos,n_func=n_func, capital=capital, receita=receita, prop_valor=prop_valor)
+    return render_template('funcionario/signup.html')
 
 
-@app.route("/signupfunc", methods=['GET','POST']) 
+@app.route("/signup", methods=['GET','POST']) 
 def signupfunc():
     if request.method == 'POST':
 
@@ -39,10 +39,10 @@ def signupfunc():
         tipo = request.form.get['tipo']
         grau = request.form.get['grau']
 
-        return render_template('funcionario/signupfunc.html', user=user, password=password, cpf=cpf, telefone=telefone, email=email,cep=cep, cargo=cargo, salario=salario, formacao=formacao, idade=idade, atuacao=atuacao, tipo=tipo, grau=grau)
-    return render_template('funcionario/signupfunc.html')
+        return render_template('funcionario/signup.html', user=user, password=password, cpf=cpf, telefone=telefone, email=email,cep=cep, cargo=cargo, salario=salario, formacao=formacao, idade=idade, atuacao=atuacao, tipo=tipo, grau=grau)
+    return render_template('funcionario/signup.html')
 
-@app.route ("/attcli", methods=['GET', 'PUT'])
+@app.route ("/att", methods=['GET', 'PUT'])
 def attcli():
     if request.method == 'PUT':
 
@@ -59,11 +59,11 @@ def attcli():
         receita = request.form.get['receita']
         prop_valor = request.form.get['prop_valor']
 
-        return render_template('funcionario/attcli.html', user=user, password=password, cnpj=cnpj, telefone=telefone, email=email, sede=sede, industria=industria, departamentos=departamentos, n_func=n_func, capital=capital,receita=receita, prop_valor=prop_valor)
-    return render_template('funcionario/attcli.html')
+        return render_template('funcionario/att.html', user=user, password=password, cnpj=cnpj, telefone=telefone, email=email, sede=sede, industria=industria, departamentos=departamentos, n_func=n_func, capital=capital,receita=receita, prop_valor=prop_valor)
+    return render_template('funcionario/att.html')
 
 
-@app.route ("/attfunc", methods=['GET', 'PUT'])
+@app.route ("/att", methods=['GET', 'PUT'])
 def attfunc():
     if request.method == 'PUT':
 
@@ -80,10 +80,9 @@ def attfunc():
         atuacao = request.form.get['atuacao']
         tipo = request.form.get['tipo']
         grau = request.form.get['grau']
+        return render_template('funcionario/att.html', user=user, password=password, cpf=cpf, telefone=telefone, email=email, cep=cep, cargo=cargo, salario=salario, formacao=formacao, idade=idade, atuacao=atuacao, tipo=tipo, grau=grau)
+    return render_template('funcionario/att.html')
 
-        return render_template('funcionario/attfunc.html', user=user, password=password, cpf=cpf, telefone=telefone, email=email, cep=cep, cargo=cargo, salario=salario, formacao=formacao, idade=idade, atuacao=atuacao, tipo=tipo, grau=grau)
-    return render_template('funcionario/attfunc.html')
-
-@app.route("/attContract") 
+@app.route("/attcontract") 
 def attContract():
-    return render_template('funcionario/attContract.html')
+    return render_template('funcionario/attcontract.html')
