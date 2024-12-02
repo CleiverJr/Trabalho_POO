@@ -44,7 +44,7 @@ def signupfunc():
 
 @app.route ("/attcli", methods=['GET', 'PUT'])
 def attcli():
-    if request.method == 'POST':
+    if request.method == 'PUT':
 
         user = request.form.get['user']
         password = request.form.get['pswrd']
@@ -65,7 +65,7 @@ def attcli():
 
 @app.route ("/attfunc", methods=['GET', 'PUT'])
 def attfunc():
-    if request.method == 'POST':
+    if request.method == 'PUT':
 
         user = request.form.get['user']
         password = request.form.get['pswrd']
