@@ -24,7 +24,7 @@ def signupcli():
 @app.route("/signupfunc", methods=['GET','POST']) 
 def signupfunc():
     if request.method == 'POST':
-        
+
         user = request.form.get['user']
         password = request.form.get['pswrd']
         cpf = request.form.get['cpf']
@@ -63,7 +63,7 @@ def attcli():
     return render_template('funcionario/attcli.html')
 
 
-@app.route ("/attfunc", methods=['PUT'])
+@app.route ("/attfunc", methods=['GET', 'PUT'])
 def attfunc():
     if request.method == 'POST':
 
