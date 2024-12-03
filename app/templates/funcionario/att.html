@@ -32,7 +32,10 @@
             </div>
             <div class="col-md-4">
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteCnpj" placeholder="CNPJ">
+                    <label id="identifierLabel" class="form-label text-white fs-4 fw-bold"></label>
+                    <select id="identifierSelect" class="form-select" onchange="loadUserData()">
+                        <!-- Options serão carregadas dinamicamente -->
+                    </select>
                 </div>
                 <div class="mb-5">
                     <input type="text" class="form-control" id="clienteSede" placeholder="Sede">
@@ -118,34 +121,73 @@
 {% endblock %}
 {% block script %}
 <script>
-    function updateForm() {
-        const userType = document.getElementById('userType').value;
-        const clienteInputs = document.getElementById('clienteInputs');
-        const funcionarioInputs = document.getElementById('funcionarioInputs');
+    document.addEventListener("DOMContentLoaded", function () {
+        updateForm();
+    });
 
-        if (userType === 'Cliente') {
-            clienteInputs.classList.remove('hidden');
-            funcionarioInputs.classList.add('hidden');
-        } else if (userType === 'Funcionário') {
-            funcionarioInputs.classList.remove('hidden');
-            clienteInputs.classList.add('hidden');
+    function updateForm() {
+        const userType = document.getElementById("userType").value;
+        const clienteInputs = document.getElementById("clienteInputs");
+        const funcionarioInputs = document.getElementById("funcionarioInputs");
+        const identifierLabel = document.getElementById("identifierLabel");
+        const identifierSelect = document.getElementById("identifierSelect");
+
+        if (userType === "Cliente") {
+            clienteInputs.style.display = "block";
+            funcionarioInputs.style.display = "none";
+            identifierLabel.textContent = "Selecione o CNPJ:";
+            fetchOptions("Cliente");
+        } else if (userType === "Funcionário") {
+            funcionarioInputs.style.display = "block";
+            clienteInputs.style.display = "none";
+            identifierLabel.textContent = "Selecione o CPF:";
+            fetchOptions("Funcionário");
         }
     }
 
-    function contratarCliente() {
-        alert('Contrato Cliente acionado');
+    async function fetchOptions(userType) {
+        try {
+            const response = await fetch(`/get_identifiers?type=${userType}`);
+            const data = await response.json();
+            const identifierSelect = document.getElementById("identifierSelect");
+            identifierSelect.innerHTML = ""; // Limpa as opções existentes
+
+            data.forEach(identifier => {
+                const option = document.createElement("option");
+                option.value = identifier;
+                option.textContent = identifier;
+                identifierSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Erro ao buscar identificadores:", error);
+        }
     }
 
-    function atualizarCliente() {
-        alert('Atualizar Cliente acionado');
+    async function loadUserData() {
+        const identifier = document.getElementById("identifierSelect").value;
+        const userType = document.getElementById("userType").value;
+
+        try {
+            const response = await fetch(`/get_user_data?type=${userType}&id=${identifier}`);
+            const userData = await response.json();
+
+            // Preenche os campos com os dados do usuário
+            for (const [key, value] of Object.entries(userData)) {
+                const input = document.getElementById(key);
+                if (input) {
+                    input.value = value;
+                }
+            }
+        } catch (error) {
+            console.error("Erro ao carregar dados do usuário:", error);
+        }
     }
 
-    function contratarFuncionario() {
-        alert('Contrato Funcionário acionado');
-    }
-
-    function atualizarFuncionario() {
-        alert('Atualizar Funcionário acionado');
+    function submitForm(event) {
+        event.preventDefault();
+        const form = document.getElementById("dynamicForm");
+        // Implemente o envio do formulário aqui, se necessário
+        alert("Formulário enviado!");
     }
 </script>
 
