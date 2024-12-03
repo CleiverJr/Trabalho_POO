@@ -32,6 +32,7 @@ def logincli():
         return redirect('/signup')
     elif email == "cliente@gmail.com" and password == "123":
         session['user_email'] = email  # Salva o e-mail na sessão
+        print("Logou como cliente")
         return redirect('/predict')
     else:        
         return "Login inválido!", 401
