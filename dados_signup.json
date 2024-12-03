@@ -43,5 +43,50 @@
         "funcionarioCargo": "",
         "funcionarioIdade": "",
         "funcionarioGrau": ""
+    },
+    {
+        "tipo": "Cliente",
+        "clienteNome": "Duda",
+        "clienteEmail": "cleiverbatista@gmail.com",
+        "clienteDepartamentos": "",
+        "clienteReceita": "",
+        "clienteCnpj": "",
+        "clienteSede": "",
+        "clienteFuncionarios": "",
+        "clientePv": "",
+        "clienteTelefone": "",
+        "clienteIndústria": "",
+        "clienteCapital": "",
+        "clienteSenha": ""
+    },
+    {
+        "tipo": "Funcionário",
+        "funcionarioNome": "Teste",
+        "funcionarioEmail": "cleiverbatista@gmail.com",
+        "funcionarioSalario": "fds",
+        "funcionarioSenha": "fds",
+        "funcionarioCpf": "",
+        "funcionarioCep": "74865-250",
+        "funcionarioFormação": "vsdf",
+        "funcionarioTipo": "fsd",
+        "funcionarioTelefone": "",
+        "funcionarioCargo": "",
+        "funcionarioIdade": "",
+        "funcionarioGrau": ""
+    },
+    {
+        "tipo": "Cliente",
+        "clienteNome": "Teste2",
+        "clienteEmail": "cleiverbatista@gmail.com",
+        "clienteDepartamentos": "fds",
+        "clienteReceita": "fds",
+        "clienteCnpj": "fds",
+        "clienteSede": "fsd",
+        "clienteFuncionarios": "fds",
+        "clientePv": "fds",
+        "clienteTelefone": "fds",
+        "clienteIndústria": "fds",
+        "clienteCapital": "fsd",
+        "clienteSenha": "fds"
     }
 ]
