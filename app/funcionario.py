@@ -10,6 +10,10 @@ CONTRACTS_FILE = "contratos.json"
 # Caminho para o arquivo JSON
 ARQUIVO_JSON = "dados_signup.json"
 
+@app.route("/mainfunc")
+def mainfunc():
+    return render_template('funcionario/mainfunc.html')
+
 # Funcao para carregar os dados existentes no JSON
 def carregar_dados():
     if os.path.exists(ARQUIVO_JSON):

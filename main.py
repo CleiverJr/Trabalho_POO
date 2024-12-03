@@ -1,10 +1,9 @@
-from fastapi import FastAPI, HTTPException, UploadFile
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pathlib import Path
 import logging
+from flask import Flask, request, jsonify, send_from_directory
+from werkzeug.utils import secure_filename
 
 import pandas as pd
 import numpy as np
@@ -18,7 +17,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from fastapi.responses import JSONResponse
 
 
 

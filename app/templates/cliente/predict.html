@@ -3,7 +3,7 @@
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/predict.css') }}"> {% endblock %}
 {% block content %}
-<form class="d-flex flex-column align-items-center justify-content-center w-100" style="background: transparent;" enctype="multipart/form-data">
+<form action="/upload_csv" method="POST" class="d-flex flex-column align-items-center justify-content-center w-100" style="background: transparent;" enctype="multipart/form-data">
     <label for="fileInput" class="btn UIButton">
         Selecione o Banco de Dados
     </label>

@@ -36,13 +36,9 @@
             </div>
             <div class="col-md-4">
                 <div class="mb-5">
-                    <label id="identifierLabel" class="form-label text-white fs-4 fw-bold"></label>
-                    <div class="mb-5 w-50">
-                        <label id="identifierLabel" class="form-label text-white fs-4 fw-bold mb-3"></label>
-                        <select id="identifierSelect" class="form-select w-50" onchange="loadUserData()">
-                            <!-- Options serão carregadas dinamicamente -->
-                        </select>
-                    </div>
+                    <select id="identifierSelect" class="form-select" onchange="loadUserData()">
+                        <!-- Options serão carregadas dinamicamente -->
+                    </select>
                 </div>
                 <div class="mb-5">
                     <input type="text" class="form-control" id="clienteSede" placeholder="Sede">
@@ -93,8 +89,8 @@
             </div>
             <div class="col-md-4">
                 <div class="mb-5">
-                    <label id="identifierLabel" class="form-label text-white fs-4 fw-bold">Selecione o CPF:</label>
-                    <select id="funcionarioCpf" class="form-select w-50" onchange="loadUserData()">
+
+                    <select id="funcionarioCpf" class="form-select " onchange="loadUserData()">
                         <!-- As opções serão carregadas dinamicamente -->
                     </select>
                 </div>
@@ -171,7 +167,7 @@
             console.log(`Dados retornados para ${userType}:`, data);
 
             // Limpa as opções existentes no dropdown
-            selectElement.innerHTML = "<option value=''>Selecione</option>";
+            selectElement.innerHTML = "<option value=''>Selecione o CPF/CNPJ</option>";
 
             // Adiciona as novas opções retornadas
             data.forEach(identifier => {
@@ -209,43 +205,43 @@
     }
 
     async function atualizarCliente() {
-    event.preventDefault(); // Evita o envio do formulário convencional
+        event.preventDefault(); // Evita o envio do formulário convencional
 
-    const clienteData = {
-        clienteCnpj: document.getElementById("identifierSelect").value, // O CNPJ selecionado
-        clienteNome: document.getElementById("clienteNome").value,
-        clienteEmail: document.getElementById("clienteEmail").value,
-        clienteDepartamentos: document.getElementById("clienteDepartamentos").value,
-        clienteReceita: document.getElementById("clienteReceita").value,
-        clienteSede: document.getElementById("clienteSede").value,
-        clienteFuncionarios: document.getElementById("clienteFuncionarios").value,
-        clientePv: document.getElementById("clientePv").value,
-        clienteTelefone: document.getElementById("clienteTelefone").value,
-        clienteIndústria: document.getElementById("clienteIndústria").value,
-        clienteCapital: document.getElementById("clienteCapital").value,
-        clienteSenha: document.getElementById("clienteSenha").value
-    };
+        const clienteData = {
+            clienteCnpj: document.getElementById("identifierSelect").value, // O CNPJ selecionado
+            clienteNome: document.getElementById("clienteNome").value,
+            clienteEmail: document.getElementById("clienteEmail").value,
+            clienteDepartamentos: document.getElementById("clienteDepartamentos").value,
+            clienteReceita: document.getElementById("clienteReceita").value,
+            clienteSede: document.getElementById("clienteSede").value,
+            clienteFuncionarios: document.getElementById("clienteFuncionarios").value,
+            clientePv: document.getElementById("clientePv").value,
+            clienteTelefone: document.getElementById("clienteTelefone").value,
+            clienteIndústria: document.getElementById("clienteIndústria").value,
+            clienteCapital: document.getElementById("clienteCapital").value,
+            clienteSenha: document.getElementById("clienteSenha").value
+        };
 
-    try {
-        const response = await fetch('/update_user_data', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(clienteData) // Envia os dados alterados como JSON
-        });
+        try {
+            const response = await fetch('/update_user_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(clienteData) // Envia os dados alterados como JSON
+            });
 
-        const result = await response.json();
-        if (response.ok) {
-            alert('Cliente atualizado com sucesso!');
-        } else {
-            alert('Erro ao atualizar o cliente: ' + result.error);
+            const result = await response.json();
+            if (response.ok) {
+                alert('Cliente atualizado com sucesso!');
+            } else {
+                alert('Erro ao atualizar o cliente: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Erro ao atualizar cliente:', error);
+            alert('Erro ao atualizar cliente');
         }
-    } catch (error) {
-        console.error('Erro ao atualizar cliente:', error);
-        alert('Erro ao atualizar cliente');
     }
-}
 
 </script>
 {% endblock %}
