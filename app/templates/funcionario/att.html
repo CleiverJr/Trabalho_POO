@@ -32,9 +32,8 @@
             </div>
             <div class="col-md-4">
                 <div class="mb-5">
-                    <label id="identifierLabel" class="form-label text-white fs-4 fw-bold"></label>
-                    <select id="identifierSelect" class="form-select" onchange="loadUserData()">
-                        <!-- Options serão carregadas dinamicamente -->
+                    <select id="identifierDropdown" onchange="loadUserData()">
+                        <option value="">Selecione um cliente</option>
                     </select>
                 </div>
                 <div class="mb-5">
@@ -63,7 +62,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-center mt-4 gap-3">
-            <button type="submit" class="btn UIButton" onclick="atualizarCliente()">Atualizar Cliente</button>
+            <button type="button" class="btn UIButton" onclick="atualizarCliente()">Atualizar Cliente</button>
         </div>
     </div>
 
@@ -86,13 +85,15 @@
             </div>
             <div class="col-md-4">
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioCpf" placeholder="CPF">
+                    <select id="identifierDropdown" onchange="loadUserData()">
+                        <option value="">Selecione um funcionário</option>
+                    </select>
                 </div>
                 <div class="mb-5">
                     <input type="text" class="form-control" id="funcionarioCep" placeholder="CEP">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioFormação" placeholder="Formação">
+                    <input type="text" class="form-control" id="funcionarioFormacao" placeholder="Formacao">
                 </div>
                 <div class="mb-5">
                     <input type="text" class="form-control" id="funcionarioTipo" placeholder="Tipo">
@@ -114,81 +115,139 @@
             </div>
         </div>
         <div class="d-flex justify-content-center mt-4 gap-3">
-            <button type="submit" class="btn UIButton" onclick="atualizarFuncionario()">Atualizar Funcionário</button>
+            <button type="button" class="btn UIButton" onclick="atualizarFuncionario()">Atualizar Funcionário</button>
         </div>
     </div>
 </form>
 {% endblock %}
 {% block script %}
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        updateForm();
-    });
+    async function loadDropdown() {
+    try {
+        const response = await fetch("/get_all_contracts"); // Rota para obter todos os contratos
+        const contracts = await response.json();
 
-    function updateForm() {
-        const userType = document.getElementById("userType").value;
-        const clienteInputs = document.getElementById("clienteInputs");
-        const funcionarioInputs = document.getElementById("funcionarioInputs");
-        const identifierLabel = document.getElementById("identifierLabel");
-        const identifierSelect = document.getElementById("identifierSelect");
+        if (response.ok) {
+            const dropdown = document.getElementById('identifierDropdown');
+            dropdown.innerHTML = '<option value="">Selecione um cliente</option>'; // Resetar as opções
 
-        if (userType === "Cliente") {
-            clienteInputs.style.display = "block";
-            funcionarioInputs.style.display = "none";
-            identifierLabel.textContent = "Selecione o CNPJ:";
-            fetchOptions("Cliente");
-        } else if (userType === "Funcionário") {
-            funcionarioInputs.style.display = "block";
-            clienteInputs.style.display = "none";
-            identifierLabel.textContent = "Selecione o CPF:";
-            fetchOptions("Funcionário");
-        }
-    }
-
-    async function fetchOptions(userType) {
-        try {
-            const response = await fetch(`/get_identifiers?type=${userType}`);
-            const data = await response.json();
-            const identifierSelect = document.getElementById("identifierSelect");
-            identifierSelect.innerHTML = ""; // Limpa as opções existentes
-
-            data.forEach(identifier => {
-                const option = document.createElement("option");
-                option.value = identifier;
-                option.textContent = identifier;
-                identifierSelect.appendChild(option);
+            Object.keys(contracts).forEach(cliente => {
+                const contract = contracts[cliente];
+                const cpfOuCnpj = contract.clienteCnpj || contract.funcionarioCpf || "Sem identificador";
+                const option = document.createElement('option');
+                option.value = cpfOuCnpj;
+                option.textContent = `${cliente} (${cpfOuCnpj})`;
+                dropdown.appendChild(option);
             });
-        } catch (error) {
-            console.error("Erro ao buscar identificadores:", error);
+        } else {
+            alert("Erro ao carregar os contratos: " + contracts.error);
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro ao carregar os contratos.");
+    }
+}
+
+// Chamar a função para carregar o dropdown quando a página for carregada
+document.addEventListener('DOMContentLoaded', loadDropdown);
+
+async function loadUserData(userType) {
+    const identifier = document.getElementById(userType === 'Cliente' ? 'clienteCnpj' : 'funcionarioCpf').value;
+
+    try {
+        const response = await fetch(`/get_att/${userType}/${identifier}`);
+        const data = await response.json();
+
+        if (response.ok) {
+            // Preencher o formulário com os dados retornados
+            if (userType === 'Cliente') {
+                document.getElementById('clienteNome').value = data.clienteNome || "";
+                document.getElementById('clienteEmail').value = data.clienteEmail || "";
+                document.getElementById('clienteDepartamentos').value = data.clienteDepartamentos || "";
+                document.getElementById('clienteReceita').value = data.clienteReceita || "";
+                document.getElementById('clienteSede').value = data.clienteSede || "";
+                document.getElementById('clienteFuncionarios').value = data.clienteFuncionarios || "";
+                document.getElementById('clientePv').value = data.clientePv || "";
+                document.getElementById('clienteTelefone').value = data.clienteTelefone || "";
+                document.getElementById('clienteIndustria').value = data.clienteIndustria || "";
+                document.getElementById('clienteCapital').value = data.clienteCapital || "";
+                document.getElementById('clienteSenha').value = data.clienteSenha || "";
+            } else if (userType === 'Funcionário') {
+                document.getElementById('funcionarioNome').value = data.funcionarioNome || "";
+                document.getElementById('funcionarioEmail').value = data.funcionarioEmail || "";
+                document.getElementById('funcionarioSalario').value = data.funcionarioSalario || "";
+                document.getElementById('funcionarioSenha').value = data.funcionarioSenha || "";
+                document.getElementById('funcionarioCep').value = data.funcionarioCep || "";
+                document.getElementById('funcionarioFormação').value = data.funcionarioFormação || "";
+                document.getElementById('funcionarioTipo').value = data.funcionarioTipo || "";
+                document.getElementById('funcionarioTelefone').value = data.funcionarioTelefone || "";
+                document.getElementById('funcionarioCargo').value = data.funcionarioCargo || "";
+                document.getElementById('funcionarioIdade').value = data.funcionarioIdade || "";
+                document.getElementById('funcionarioGrau').value = data.funcionarioGrau || "";
+            }
+        } else {
+            alert("Erro ao carregar os dados: " + data.error);
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro ao carregar os dados.");
+    }
+}
+
+
+
+    async function updateForm() {
+        const userType = document.getElementById('userType').value;
+        const clienteInputs = document.getElementById('clienteInputs');
+        const funcionarioInputs = document.getElementById('funcionarioInputs');
+
+        if (userType === 'Cliente') {
+            clienteInputs.classList.remove('hidden');
+            funcionarioInputs.classList.add('hidden');
+        } else if (userType === 'Funcionário') {
+            clienteInputs.classList.add('hidden');
+            funcionarioInputs.classList.remove('hidden');
         }
     }
 
-    async function loadUserData() {
-        const identifier = document.getElementById("identifierSelect").value;
-        const userType = document.getElementById("userType").value;
+
+    async function adicionarCliente() {
+        const identifier = document.getElementById('clienteCnpj').value;
+        const updatedData = {
+            clienteNome: document.getElementById('clienteNome').value,
+            clienteEmail: document.getElementById('clienteEmail').value,
+            clienteDepartamentos: document.getElementById('clienteDepartamentos').value,
+            clienteReceita: document.getElementById('clienteReceita').value,
+            clienteSede: document.getElementById('clienteSede').value,
+            clienteFuncionarios: document.getElementById('clienteFuncionarios').value,
+            clientePv: document.getElementById('clientePv').value,
+            clienteTelefone: document.getElementById('clienteTelefone').value,
+            clienteIndustria: document.getElementById('clienteIndustria').value,
+            clienteCapital: document.getElementById('clienteCapital').value,
+            clienteSenha: document.getElementById('clienteSenha').value
+        };
 
         try {
-            const response = await fetch(`/get_user_data?type=${userType}&id=${identifier}`);
-            const userData = await response.json();
+            const response = await fetch(`/update_att/${identifier}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updatedData)
+            });
 
-            // Preenche os campos com os dados do usuário
-            for (const [key, value] of Object.entries(userData)) {
-                const input = document.getElementById(key);
-                if (input) {
-                    input.value = value;
-                }
+            const result = await response.json();
+            if (response.ok) {
+                alert(result.message);
+            } else {
+                alert("Erro ao atualizar os dados: " + result.error);
             }
         } catch (error) {
-            console.error("Erro ao carregar dados do usuário:", error);
+            console.error("Erro na requisição:", error);
+            alert("Erro ao atualizar os dados.");
         }
     }
-
-    function submitForm(event) {
-        event.preventDefault();
-        const form = document.getElementById("dynamicForm");
-        // Implemente o envio do formulário aqui, se necessário
-        alert("Formulário enviado!");
-    }
 </script>
+
 
 {% endblock %}

@@ -30,10 +30,12 @@
                     <input type="text" class="form-control" id="clienteManutencao" placeholder="Manutenção">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteFrequenciaAtualizacao" placeholder="Frequência Atualização">
+                    <input type="text" class="form-control" id="clienteFrequenciaAtualizacao"
+                        placeholder="Frequência Atualização">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteTamanhoBD" placeholder="Tamanho do banco de dados">
+                    <input type="text" class="form-control" id="clienteTamanhoBD"
+                        placeholder="Tamanho do banco de dados">
                 </div>
                 <div class="mb-5">
                     <input type="text" class="form-control" id="clienteHospedagem" placeholder="Serviço de hospedagem">
@@ -62,10 +64,12 @@
                     <input type="text" class="form-control" id="clienteManutencao" placeholder="Manutenção">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteFrequenciaAtualizacao" placeholder="Frequência Atualização">
+                    <input type="text" class="form-control" id="clienteFrequenciaAtualizacao"
+                        placeholder="Frequência Atualização">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteTamanhoBD" placeholder="Tamanho do banco de dados">
+                    <input type="text" class="form-control" id="clienteTamanhoBD"
+                        placeholder="Tamanho do banco de dados">
                 </div>
                 <div class="mb-5">
                     <input type="text" class="form-control" id="clienteHospedagem" placeholder="Serviço de hospedagem">
@@ -80,28 +84,66 @@
 {% endblock %}
 {% block script %}
 <script>
-    function updateForm() {
-        const userType = document.getElementById('userType').value;
-        const clienteInputs = document.getElementById('clienteInputs');
-        const funcionarioInputs = document.getElementById('funcionarioInputs');
+    async function updateForm() {
+    const userType = document.getElementById('userType').value;
 
-        if (userType === 'Cliente') {
-            clienteInputs.classList.remove('hidden');
-            funcionarioInputs.classList.add('hidden');
-        } else if (userType === 'Funcionário') {
-            funcionarioInputs.classList.remove('hidden');
-            clienteInputs.classList.add('hidden');
+    try {
+        const response = await fetch(`/get_contract/${userType}`);
+        const data = await response.json();
+
+        if (response.ok) {
+            // Preencher os campos do formulário com os valores do contrato
+            document.getElementById('clienteNecessidade').value = data.Necessidade || "";
+            document.getElementById('clientePreco').value = data["Preço"] || "";
+            document.getElementById('clienteDuracao').value = data["Duração"] || "";
+            document.getElementById('clienteManutencao').value = data["Manutenção"] || "";
+            document.getElementById('clienteFrequenciaAtualizacao').value = data["Frequência Atualização"] || "";
+            document.getElementById('clienteTamanhoBD').value = data["Tamanho BD"] || "";
+            document.getElementById('clienteHospedagem').value = data.Hospedagem || "";
+        } else {
+            alert("Erro ao carregar os dados: " + data.error);
         }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro ao carregar os dados.");
     }
+}
 
-    function adicionarCliente() {
-        alert('Contrato Cliente acionado');
-    }
+async function adicionarCliente() {
+    const userType = document.getElementById('userType').value;
+    const updatedData = {
+        "Necessidade": document.getElementById('clienteNecessidade').value,
+        "Preço": document.getElementById('clientePreco').value,
+        "Duração": document.getElementById('clienteDuracao').value,
+        "Manutenção": document.getElementById('clienteManutencao').value,
+        "Frequência Atualização": document.getElementById('clienteFrequenciaAtualizacao').value,
+        "Tamanho BD": document.getElementById('clienteTamanhoBD').value,
+        "Hospedagem": document.getElementById('clienteHospedagem').value
+    };
 
-    function adicionarFuncionario() {
-        alert('Contrato Funcionário acionado');
+    try {
+        const response = await fetch(`/update_contract/${userType}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updatedData)
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message);
+        } else {
+            alert("Erro ao atualizar os dados: " + result.error);
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro ao atualizar os dados.");
     }
+}
+
 
 </script>
+
 
 {% endblock %}
