@@ -3,11 +3,11 @@
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/att.css') }}"> {% endblock %}
 {% block content %}
-<form id="dynamicForm" class="w-100">
+<form id="dynamicForm" class="w-100" method="POST" action="/att">
     <!-- Dropdown Principal -->
     <div class="mb-5 w-50">
         <label for="userType" class="form-label text-white fs-2 fw-bold mb-3">Selecione o Tipo de Usuário:</label>
-        <select id="userType" class="form-select w-50" onchange="updateForm()">
+        <select id="userType" name="tipo" class="form-select w-50" onchange="updateForm()">
             <option value="Cliente">Cliente</option>
             <option value="Funcionário">Funcionário</option>
         </select>
@@ -18,47 +18,47 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-5">
-                    <input name="searchKey" type="text" class="form-control" id="clienteNome" placeholder="Nome">
+                    <input name="clienteNome" type="text" class="form-control" id="clienteNome" placeholder="Nome">
                 </div>
                 <div class="mb-5">
-                    <input type="email" class="form-control" id="clienteEmail" placeholder="Email">
+                    <input name="clienteEmail" type="email" class="form-control" id="clienteEmail" placeholder="Email">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteDepartamentos" placeholder="Departamentos">
+                    <input name="clienteDepartamentos" type="text" class="form-control" id="clienteDepartamentos" placeholder="Departamentos">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteReceita" placeholder="Receita">
+                    <input name="clienteReceita" type="text" class="form-control" id="clienteReceita" placeholder="Receita">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-5">
                     <label id="identifierLabel" class="form-label text-white fs-4 fw-bold"></label>
-                    <select id="identifierSelect" class="form-select" onchange="loadUserData()">
+                    <select name="identifierSelect" id="identifierSelect" class="form-select" onchange="loadUserData()">
                         <!-- Options serão carregadas dinamicamente -->
                     </select>
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteSede" placeholder="Sede">
+                    <input name="clienteSede" type="text" class="form-control" id="clienteSede" placeholder="Sede">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteFuncionarios" placeholder="N° de Funcionários">
+                    <input name="clienteFuncionarios" type="text" class="form-control" id="clienteFuncionarios" placeholder="N° de Funcionários">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clientePv" placeholder="Proposta de valor">
+                    <input name="clientePv" type="text" class="form-control" id="clientePv" placeholder="Proposta de valor">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteTelefone" placeholder="Telefone">
+                    <input name="clienteTelefone" type="text" class="form-control" id="clienteTelefone" placeholder="Telefone">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteIndústria" placeholder="Indústria">
+                    <input name="clienteIndústria" type="text" class="form-control" id="clienteIndústria" placeholder="Indústria">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteCapital" placeholder="Capital">
+                    <input name="clienteCapital" type="text" class="form-control" id="clienteCapital" placeholder="Capital">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="clienteSenha" placeholder="Senha">
+                    <input name="clienteSenha" type="text" class="form-control" id="clienteSenha" placeholder="Senha">
                 </div>
             </div>
         </div>
@@ -67,49 +67,50 @@
         </div>
     </div>
 
+
     <!-- Inputs para Funcionário -->
     <div id="funcionarioInputs" class="hidden">
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioNome" placeholder="Nome">
+                    <input name="funcionarioNome" type="text" class="form-control" id="funcionarioNome" placeholder="Nome">
                 </div>
                 <div class="mb-5">
-                    <input type="email" class="form-control" id="funcionarioEmail" placeholder="Email">
+                    <input name="funcionarioEmail" type="email" class="form-control" id="funcionarioEmail" placeholder="Email">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioSalario" placeholder="Salário">
+                    <input name="funcionarioSalario" type="text" class="form-control" id="funcionarioSalario" placeholder="Salário">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioSenha" placeholder="Senha">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioCpf" placeholder="CPF">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioCep" placeholder="CEP">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioFormação" placeholder="Formação">
-                </div>
-                <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioTipo" placeholder="Tipo">
+                    <input name="funcionarioSenha" type="text" class="form-control" id="funcionarioSenha" placeholder="Senha">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioTelefone" placeholder="Telefone">
+                    <input name="funcionarioCpf" type="text" class="form-control" id="funcionarioCpf" placeholder="CPF">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioCargo" placeholder="Cargo">
+                    <input name="funcionarioCep" type="text" class="form-control" id="funcionarioCep" placeholder="CEP">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioIdade" placeholder="Idade">
+                    <input name="funcionarioFormação" type="text" class="form-control" id="funcionarioFormação" placeholder="Formação">
                 </div>
                 <div class="mb-5">
-                    <input type="text" class="form-control" id="funcionarioGrau" placeholder="Grau">
+                    <input name="funcionarioTipo" type="text" class="form-control" id="funcionarioTipo" placeholder="Tipo">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-5">
+                    <input name="funcionarioTelefone" type="text" class="form-control" id="funcionarioTelefone" placeholder="Telefone">
+                </div>
+                <div class="mb-5">
+                    <input name="funcionarioCargo" type="text" class="form-control" id="funcionarioCargo" placeholder="Cargo">
+                </div>
+                <div class="mb-5">
+                    <input name="funcionarioIdade" type="text" class="form-control" id="funcionarioIdade" placeholder="Idade">
+                </div>
+                <div class="mb-5">
+                    <input name="funcionarioGrau" type="text" class="form-control" id="funcionarioGrau" placeholder="Grau">
                 </div>
             </div>
         </div>
@@ -117,6 +118,7 @@
             <button type="submit" class="btn UIButton" onclick="atualizarFuncionario()">Atualizar Funcionário</button>
         </div>
     </div>
+
 </form>
 {% endblock %}
 {% block script %}
@@ -147,7 +149,7 @@
 
     async function fetchOptions(userType) {
         try {
-            const response = await fetch(`/get_identifiers?type=${userType}`);
+            const response = await fetch(/get_identifiers?type=${userType});
             const data = await response.json();
             const identifierSelect = document.getElementById("identifierSelect");
             identifierSelect.innerHTML = ""; // Limpa as opções existentes
@@ -168,7 +170,7 @@
         const userType = document.getElementById("userType").value;
 
         try {
-            const response = await fetch(`/get_user_data?type=${userType}&id=${identifier}`);
+            const response = await fetch(/get_user_data?type=${userType}&id=${identifier});
             const userData = await response.json();
 
             // Preenche os campos com os dados do usuário

@@ -85,90 +85,100 @@ def attcontract():
 
 @app.route ("/att", methods=['GET', 'POST'])
 def att():
-    arquivo_json = "dados_signup.json"
+    dados = carregar_dados()
+    print('carregou os dados')
+    user_type = request.form.get('tipo')
+    identificador = request.form.get('identifierSelect')
+    print(identificador)
+    
     if request.method == 'POST':
-        clienteCnpj = request.form.get('clienteCnpj')
-        funcionarioCpf = request.form.get('funcionarioCpf')
-        if funcionarioCpf == '':
-            chamada = clienteCnpj
-        else: 
-            chamada = clienteCnpj
-        dados = {
-            "clienteNome": request.form.get('clienteNome'),
-            "clienteEmail": request.form.get('clienteEmail'),
-            "clienteDepartamentos": request.form.get('clienteDepartamentos'),
-            "clienteReceita": request.form.get('clienteReceita'),
-            "clienteCnpj": request.form.get('clienteCnpj'),
-            "clienteSede": request.form.get('clienteSede'),
-            "clienteFuncionarios": request.form.get('clienteFuncionarios'),
-            "clientePv": request.form.get('clientePv'),
-            "clienteTelefone": request.form.get('clienteTelefone'),
-            "clienteIndústria": request.form.get('clienteIndústria'),
-            "clienteCapital": request.form.get('clienteCapital'),
-            "clienteSenha": request.form.get('clienteSenha'),
-            "funcionarioNome": request.form.get('funcionarioNome'),
-            "funcionarioEmail": request.form.get('funcionarioEmail'),
-            "funcionarioSalario": request.form.get('funcionarioSalario'),
-            "funcionarioSenha": request.form.get('funcionarioSenha'),
-            "funcionarioCpf": request.form.get('funcionarioCpf'),
-            "funcionarioCep": request.form.get('funcionarioCep'),
-            "funcionarioFormação": request.form.get('funcionarioFormação'),
-            "funcionarioTipo": request.form.get('funcionarioTipo'),
-            "funcionarioTelefone": request.form.get('funcionarioTelefone'),
-            "funcionarioCargo": request.form.get('funcionarioCargo'),
-            "funcionarioIdade": request.form.get('funcionarioIdade'),
-            "funcionarioGrau": request.form.get('funcionarioGrau')
-        }
+        novos_dados = {}
+        print('acessou o POST')
+        if user_type == 'Cliente':
+            print("viu que era tipo:Cliente")
+            novos_dados = {
+                "tipo": "Cliente",
+                "clienteNome": request.form.get('clienteNome'),
+                "clienteEmail": request.form.get('clienteEmail'),
+                "clienteDepartamentos": request.form.get('clienteDepartamentos'),
+                "clienteReceita": request.form.get('clienteReceita'),
+                "clienteCnpj": request.form.get('clienteCnpj'),
+                "clienteSede": request.form.get('clienteSede'),
+                "clienteFuncionarios": request.form.get('clienteFuncionarios'),
+                "clientePv": request.form.get('clientePv'),
+                "clienteTelefone": request.form.get('clienteTelefone'),
+                "clienteIndustria": request.form.get('clienteIndústria'),
+                "clienteCapital": request.form.get('clienteCapital'),
+                "clienteSenha": request.form.get('clienteSenha')
+            }
+        elif user_type == 'Funcionario':
+            novos_dados = {
+                "tipo": "Funcionario",
+                "funcionarioNome": request.form.get('funcionarioNome'),
+                "funcionarioEmail": request.form.get('funcionarioEmail'),
+                "funcionarioSalario": request.form.get('funcionarioSalario'),
+                "funcionarioSenha": request.form.get('funcionarioSenha'),
+                "funcionarioCep": request.form.get('funcionarioCep'),
+                "funcionarioFormação": request.form.get('funcionarioFormação'),
+                "funcionarioTipo": request.form.get('funcionarioTipo'),
+                "funcionarioTelefone": request.form.get('funcionarioTelefone'),
+                "funcionarioCargo": request.form.get('funcionarioCargo'),
+                "funcionarioIdade": request.form.get('funcionarioIdade'),
+                "funcionarioGrau": request.form.get('funcionarioGrau')
+            }
+        # Atualiza os dados na lista
+        registro_atualizado = False
+        for registro in dados:
+            if registro.get("tipo") == user_type:
+                print('tipo = usertype')
+                print(registro.get("clienteCnpj"))
+                if user_type == "Cliente": 
+                    if registro.get("clienteCnpj") == identificador:
+                        print('cnpj corresponde')
+                if user_type == "Funcionario":
+                    if registro.get("funcionarioCpf") == identificador:
+                        print('cpf corresponde')
+                    registro.update(novos_dados)
+                    print('updtae no json feito')
+                    registro_atualizado = True
+                    break
+            print('Atualizando os dados')
 
-        # Verifica se o arquivo existe e carrega os dados
-        if os.path.exists(arquivo_json):
-            with open(arquivo_json, 'r') as arquivo:
-                try:
-                    dados_existentes = json.load(arquivo)
-                except json.JSONDecodeError:
-                    return "Erro ao carregar os dados existentes.", 400
+        if registro_atualizado:
+            salvar_dados(dados)  # Salva os dados atualizados no JSON
+            print("deu mec")
+            return "Dados atualizados com sucesso.", 200
         else:
-            return "Arquivo de dados não encontrado.", 404
-        
-        # Atualiza o cliente baseado na chamada
-        for usuario in dados_existentes:
-            if usuario[chamada] == chamada:
-                usuario.update(dados)
-                break
-        else:
-            return "Cliente não encontrado.", 404
-        
-        # Salva os dados atualizados
-        try:
-            with open(arquivo_json, 'w') as arquivo:
-                json.dump(dados_existentes, arquivo, indent=4)
-        except Exception as e:
-            return f"Erro ao salvar os dados: {e}"
-
-        return "Cliente atualizado com sucesso!"
+            print('deu bosta')
+            return "Registro não encontrado.", 404
         
     return render_template('funcionario/att.html')
 
+#dropdown
 @app.route('/get_identifiers', methods=['GET'])
 def get_identifiers():
     user_type = request.args.get('type')
+
     if not user_type:
-        return jsonify({"error": "Tipo de usuário não especificado"}), 400
+        return jsonify({"error": "Tipo de usuário não fornecido"}), 400
 
     try:
         with open("dados_signup.json", "r") as arquivo:
             dados = json.load(arquivo)
-        if user_type == "Cliente":
-            identifiers = [cliente["clienteCnpj"] for cliente in dados if "clienteCnpj" in cliente]
-        elif user_type == "Funcionário":
-            identifiers = [funcionario["funcionarioCpf"] for funcionario in dados if "funcionarioCpf" in funcionario]
-        else:
-            return jsonify({"error": "Tipo de usuário inválido"}), 400
 
+        identifiers = []
+        for usuario in dados:
+            if user_type == "Cliente":
+                if usuario.get("clienteCnpj"):
+                    identifiers.append(usuario.get("clienteCnpj"))
+            elif user_type == "Funcionário":
+                if usuario.get("funcionarioCpf"):
+                    identifiers.append(usuario.get("funcionarioCpf"))
+        
         return jsonify(identifiers)
+    
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 @app.route('/get_user_data', methods=['GET'])
 def get_user_data():
@@ -188,5 +198,6 @@ def get_user_data():
                 return jsonify(usuario)
 
         return jsonify({"error": "Usuário não encontrado"}), 404
+    
     except Exception as e:
         return jsonify({"error": str(e)}), 500

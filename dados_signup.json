@@ -88,5 +88,20 @@
         "clienteIndustria": "kjh",
         "clienteCapital": ",nm",
         "clienteSenha": "nbfv"
+    },
+    {
+        "tipo": "Cliente",
+        "clienteNome": "Bruno Moreira Lvalli Calura",
+        "clienteEmail": "cleiverbatista@gmail.com",
+        "clienteDepartamentos": "3",
+        "clienteReceita": "5000",
+        "clienteCnpj": "123456789",
+        "clienteSede": "brasilia",
+        "clienteFuncionarios": "10",
+        "clientePv": "enriquecer os clientes",
+        "clienteTelefone": "62993242479",
+        "clienteIndustria": "Sim",
+        "clienteCapital": "10000",
+        "clienteSenha": "321"
     }
 ]
