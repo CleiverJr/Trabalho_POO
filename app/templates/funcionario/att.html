@@ -36,7 +36,7 @@
             </div>
             <div class="col-md-4">
                 <div class="mb-5">
-                    <select id="identifierSelect" class="form-select" onchange="loadUserData()">
+                    <select id="clienteCnpj" class="form-select" onchange="loadUserData()">
                         <!-- Options serão carregadas dinamicamente -->
                     </select>
                 </div>
@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-center mt-4 gap-3">
-            <button type="submit" class="btn UIButton" onclick="atualizarCliente()">Atualizar Cliente</button>
+            <button type="submit" class="btn UIButton" onclick="atualizarCadastro()">Atualizar Cadastro</button>
         </div>
     </div>
 
@@ -120,7 +120,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-center mt-4 gap-3">
-            <button type="submit" class="btn UIButton" onclick="atualizarFuncionario()">Atualizar Funcionário</button>
+            <button type="submit" class="btn UIButton" onclick="atualizarCadastro()">Atualizar Cadastro</button>
         </div>
     </div>
 </form>
@@ -143,11 +143,11 @@
         if (userType === "cliente") {
             clienteInputs.style.display = "block";
             funcionarioInputs.style.display = "none";
-            fetchOptions("Cliente", document.getElementById("identifierSelect"));
+            fetchOptions("Cliente", document.getElementById("clienteCnpj"));
         } else if (userType === "funcionario") {
             funcionarioInputs.style.display = "block";
             clienteInputs.style.display = "none";
-            fetchOptions("Funcionário", document.getElementById("funcionarioCpf"));
+            fetchOptions("Funcionario", document.getElementById("funcionarioCpf"));
         } else {
             console.error("Tipo de usuário inválido selecionado.");
         }
@@ -183,10 +183,9 @@
 
     async function loadUserData() {
         const userType = document.getElementById("userType").value;
-        const identifier =
-            userType === "Cliente"
-                ? document.getElementById("identifierSelect").value
-                : document.getElementById("funcionarioCpf").value;
+        const identifier = userType === "Cliente"
+            ? document.getElementById("clienteCnpj").value
+            : document.getElementById("funcionarioCpf").value;
 
         try {
             const response = await fetch(`/get_user_data?type=${userType}&id=${identifier}`);
@@ -204,23 +203,44 @@
         }
     }
 
-    async function atualizarCliente() {
+
+    async function atualizarCadastro() {
         event.preventDefault(); // Evita o envio do formulário convencional
 
-        const clienteData = {
-            clienteCnpj: document.getElementById("identifierSelect").value, // O CNPJ selecionado
-            clienteNome: document.getElementById("clienteNome").value,
-            clienteEmail: document.getElementById("clienteEmail").value,
-            clienteDepartamentos: document.getElementById("clienteDepartamentos").value,
-            clienteReceita: document.getElementById("clienteReceita").value,
-            clienteSede: document.getElementById("clienteSede").value,
-            clienteFuncionarios: document.getElementById("clienteFuncionarios").value,
-            clientePv: document.getElementById("clientePv").value,
-            clienteTelefone: document.getElementById("clienteTelefone").value,
-            clienteIndústria: document.getElementById("clienteIndústria").value,
-            clienteCapital: document.getElementById("clienteCapital").value,
-            clienteSenha: document.getElementById("clienteSenha").value
-        };
+        const userType = document.getElementById("userType").value;
+        let userData = {};
+
+        if (userType === "Cliente") {
+            userData = {
+                clienteCnpj: document.getElementById("identifierSelect").value,
+                clienteNome: document.getElementById("clienteNome").value,
+                clienteEmail: document.getElementById("clienteEmail").value,
+                clienteDepartamentos: document.getElementById("clienteDepartamentos").value,
+                clienteReceita: document.getElementById("clienteReceita").value,
+                clienteSede: document.getElementById("clienteSede").value,
+                clienteFuncionarios: document.getElementById("clienteFuncionarios").value,
+                clientePv: document.getElementById("clientePv").value,
+                clienteTelefone: document.getElementById("clienteTelefone").value,
+                clienteIndústria: document.getElementById("clienteIndústria").value,
+                clienteCapital: document.getElementById("clienteCapital").value,
+                clienteSenha: document.getElementById("clienteSenha").value
+            };
+        } else if (userType === "Funcionario") {
+            userData = {
+                funcionarioCpf: document.getElementById("funcionarioCpf").value,
+                funcionarioNome: document.getElementById("funcionarioNome").value,
+                funcionarioEmail: document.getElementById("funcionarioEmail").value,
+                funcionarioSalario: document.getElementById("funcionarioSalario").value,
+                funcionarioSenha: document.getElementById("funcionarioSenha").value,
+                funcionarioCep: document.getElementById("funcionarioCep").value,
+                funcionarioFormacao: document.getElementById("funcionarioFormacao").value,
+                funcionarioTipo: document.getElementById("funcionarioTipo").value,
+                funcionarioTelefone: document.getElementById("funcionarioTelefone").value,
+                funcionarioCargo: document.getElementById("funcionarioCargo").value,
+                funcionarioIdade: document.getElementById("funcionarioIdade").value,
+                funcionarioGrau: document.getElementById("funcionarioGrau").value
+            };
+        }
 
         try {
             const response = await fetch('/update_user_data', {
@@ -228,20 +248,21 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(clienteData) // Envia os dados alterados como JSON
+                body: JSON.stringify(userData)
             });
 
             const result = await response.json();
             if (response.ok) {
-                alert('Cliente atualizado com sucesso!');
+                alert(`${userType} atualizado com sucesso!`);
             } else {
-                alert('Erro ao atualizar o cliente: ' + result.error);
+                alert(`Erro ao atualizar o ${userType}: ` + result.error);
             }
         } catch (error) {
-            console.error('Erro ao atualizar cliente:', error);
-            alert('Erro ao atualizar cliente');
+            console.error(`Erro ao atualizar ${userType}:`, error);
+            alert(`Erro ao atualizar ${userType}`);
         }
     }
+
 
 </script>
 {% endblock %}

@@ -9,7 +9,7 @@
         <label for="userType" class="form-label text-white fs-2 fw-bold mb-3">Selecione Quem Deseja Cadastrar:</label>
         <select id="userType" name="userType" class="form-select w-50" onchange="updateForm()">
             <option value="Cliente">Cliente</option>
-            <option value="Funcionário">Funcionário</option>
+            <option value="Funcionario">Funcionário</option>
         </select>
     </div>
 
@@ -133,7 +133,7 @@
             resetInputs(funcionarioInputs); // Resetar os inputs do Funcionário
             clienteInputs.classList.remove('hidden');
             funcionarioInputs.classList.add('hidden');
-        } else if (userType === 'Funcionário') {
+        } else if (userType === 'Funcionario') {
             resetInputs(clienteInputs); // Resetar os inputs do Cliente
             funcionarioInputs.classList.remove('hidden');
             clienteInputs.classList.add('hidden');

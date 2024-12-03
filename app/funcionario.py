@@ -58,9 +58,9 @@ def signup():
                 "clienteCapital": request.form.get('clienteCapital'),
                 "clienteSenha": request.form.get('clienteSenha')
             }
-        elif user_type == 'Funcionário':
+        elif user_type == 'Funcionario':
             dados = {
-                "tipo": "Funcionário",
+                "tipo": "Funcionario",
                 "funcionarioNome": request.form.get('funcionarioNome'),
                 "funcionarioEmail": request.form.get('funcionarioEmail'),
                 "funcionarioSalario": request.form.get('funcionarioSalario'),
@@ -133,10 +133,12 @@ def update_contract(cliente):
 
 
 
-@app.route("/att")
+@app.route("/att", methods=['GET'])
 def att():
     return render_template("funcionario/att.html")
 
+
+#identifica o tipo(funcionário ou cliente)
 @app.route('/get_identifiers', methods=['GET'])
 def get_identifiers():
     user_type = request.args.get('type')
@@ -153,7 +155,7 @@ def get_identifiers():
             if user_type == "Cliente":
                 if usuario.get("clienteCnpj"):
                     identifiers.append(usuario.get("clienteCnpj"))
-            elif user_type == "Funcionário":
+            elif user_type == "Funcionario":
                 if usuario.get("funcionarioCpf"):
                     identifiers.append(usuario.get("funcionarioCpf"))
         
@@ -162,22 +164,34 @@ def get_identifiers():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+#seleciona o cpf/cnpj
 @app.route('/get_user_data', methods=['GET'])
 def get_user_data():
     user_type = request.args.get('type')
     identifier = request.args.get('id')
+    print('1 identfier =', identifier)
+    print(user_type)
 
     if not user_type or not identifier:
         return jsonify({"error": "Parâmetros insuficientes"}), 400
 
     try:
-        with open("dados_signup.json", "r") as arquivo:
+        with open("dados_signup.json", "r", encoding="utf-8") as arquivo:
             dados = json.load(arquivo)
 
         for usuario in dados:
+            print(usuario.get("funcionarioCpf"))
+            print('')
+            print('comparação')
+            print(type(identifier))
+            print(type(usuario.get("funcionarioCpf")))
+            print('')
+            print(usuario)
             if (user_type == "Cliente" and usuario.get("clienteCnpj") == identifier) or \
-                (user_type == "Funcionário" and usuario.get("funcionarioCpf") == identifier):
-                return jsonify(usuario)
+                (user_type == "Funcionario" and usuario.get("funcionarioCpf") == identifier):
+                print('identifier =', identifier)
+                print('usertype= ', user_type)
+                return jsonify(usuario), 200
 
         return jsonify({"error": "Usuário não encontrado"}), 404
     
@@ -189,10 +203,13 @@ def update_user_data():
     try:
         # Recebe os dados JSON enviados do frontend
         data = request.get_json()
-        cliente_cnpj = data.get('clienteCnpj')
+        user_type = request.args.get('type')
+        identifier = request.args.get('id')
+        print(user_type)
+        print(identifier)
 
-        if not cliente_cnpj:
-            return jsonify({"error": "CNPJ do cliente não fornecido"}), 400
+        if not user_type or not identifier:
+            return jsonify({"error": "Tipo de usuário ou identificador não fornecido"}), 400
 
         # Lê o arquivo JSON para encontrar os dados do cliente
         with open("dados_signup.json", "r", encoding="utf-8") as arquivo:
@@ -201,7 +218,8 @@ def update_user_data():
         # Encontra o cliente e atualiza seus dados
         updated = False
         for usuario in dados:
-            if usuario.get("clienteCnpj") == cliente_cnpj:
+            if (user_type == "Cliente" and usuario.get("clienteCnpj") == identifier) or \
+               (user_type == "Funcionario" and usuario.get("funcionarioCpf") == identifier):
                 # Atualiza os dados do cliente
                 usuario.update(data)
                 updated = True
