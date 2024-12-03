@@ -1,7 +1,7 @@
 [
     {
         "tipo": "Cliente",
-        "clienteNome": "Cleiver Batista da Silva",
+        "clienteNome": "Cleiver Batista da Silva Júnior",
         "clienteEmail": "cleiverbatista@gmail.com",
         "clienteDepartamentos": "fds",
         "clienteReceita": "fds",
@@ -12,17 +12,18 @@
         "clienteTelefone": "fds",
         "clienteIndustria": "fds",
         "clienteCapital": "fds",
-        "clienteSenha": "fds"
+        "clienteSenha": "fds",
+        "clienteIndústria": ""
     },
     {
-        "tipo": "Funcionário",
+        "tipo": "FuncionÃ¡rio",
         "funcionarioNome": "Cleiver Batista da Silva",
         "funcionarioEmail": "cleiverbatista@gmail.com",
         "funcionarioSalario": "fds",
         "funcionarioSenha": "fsd",
         "funcionarioCpf": "7777",
         "funcionarioCep": "74865-250",
-        "funcionarioFormação": "fds",
+        "funcionarioFormaÃ§Ã£o": "fds",
         "funcionarioTipo": "fds",
         "funcionarioTelefone": "fd",
         "funcionarioCargo": "fds",
@@ -30,14 +31,14 @@
         "funcionarioGrau": "fds"
     },
     {
-        "tipo": "Funcionário",
+        "tipo": "FuncionÃ¡rio",
         "funcionarioNome": "321",
         "funcionarioEmail": "cleiverbatista@gmail.com",
         "funcionarioSalario": "321",
         "funcionarioSenha": "32",
         "funcionarioCpf": "4321",
         "funcionarioCep": "321",
-        "funcionarioFormação": "",
+        "funcionarioFormaÃ§Ã£o": "",
         "funcionarioTipo": "321",
         "funcionarioTelefone": "",
         "funcionarioCargo": "",
@@ -55,19 +56,19 @@
         "clienteFuncionarios": "",
         "clientePv": "",
         "clienteTelefone": "",
-        "clienteIndústria": "",
+        "clienteIndÃºstria": "",
         "clienteCapital": "",
         "clienteSenha": ""
     },
     {
-        "tipo": "Funcionário",
+        "tipo": "FuncionÃ¡rio",
         "funcionarioNome": "Teste",
         "funcionarioEmail": "cleiverbatista@gmail.com",
         "funcionarioSalario": "fds",
         "funcionarioSenha": "fds",
         "funcionarioCpf": "",
         "funcionarioCep": "74865-250",
-        "funcionarioFormação": "vsdf",
+        "funcionarioFormaÃ§Ã£o": "vsdf",
         "funcionarioTipo": "fsd",
         "funcionarioTelefone": "",
         "funcionarioCargo": "",
@@ -76,17 +77,18 @@
     },
     {
         "tipo": "Cliente",
-        "clienteNome": "Teste2",
+        "clienteNome": "Teste2_",
         "clienteEmail": "cleiverbatista@gmail.com",
-        "clienteDepartamentos": "fds",
+        "clienteDepartamentos": "Indústção",
         "clienteReceita": "fds",
         "clienteCnpj": "fds",
         "clienteSede": "fsd",
         "clienteFuncionarios": "fds",
         "clientePv": "fds",
         "clienteTelefone": "fds",
-        "clienteIndústria": "fds",
+        "clienteIndÃºstria": "fds",
         "clienteCapital": "fsd",
-        "clienteSenha": "fds"
+        "clienteSenha": "fds",
+        "clienteIndústria": ""
     }
 ]

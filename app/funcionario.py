@@ -179,3 +179,38 @@ def get_user_data():
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/update_user_data', methods=['POST'])
+def update_user_data():
+    try:
+        # Recebe os dados JSON enviados do frontend
+        data = request.get_json()
+        cliente_cnpj = data.get('clienteCnpj')
+
+        if not cliente_cnpj:
+            return jsonify({"error": "CNPJ do cliente não fornecido"}), 400
+
+        # Lê o arquivo JSON para encontrar os dados do cliente
+        with open("dados_signup.json", "r", encoding="utf-8") as arquivo:
+            dados = json.load(arquivo)
+
+        # Encontra o cliente e atualiza seus dados
+        updated = False
+        for usuario in dados:
+            if usuario.get("clienteCnpj") == cliente_cnpj:
+                # Atualiza os dados do cliente
+                usuario.update(data)
+                updated = True
+                break
+
+        if not updated:
+            return jsonify({"error": "Cliente não encontrado"}), 404
+
+        # Escreve os dados de volta para o arquivo JSON
+        with open("dados_signup.json", "w", encoding="utf-8") as arquivo:
+            json.dump(dados, arquivo, indent=4, ensure_ascii=False)
+
+        return jsonify({"message": "Dados atualizados com sucesso"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
