@@ -1,9 +1,12 @@
 from flask import Flask, request, jsonify
+from flask import render_template
+from app import app
 from flask_cors import CORS
 from pathlib import Path
 import logging
 from flask import Flask, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
+import os
 
 import pandas as pd
 import numpy as np
@@ -464,69 +467,55 @@ def plot_histogram_with_interval(data, COLUNA, NOME_Y, NOME_X, NOME_TITULO, rang
     if not file_path.is_file():
         raise RuntimeError(f"Failed to save barh plot to {file_path}") 
 
-# Configuração básica de logging
+# Configuração de logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-handler = logging.StreamHandler()
-handler.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
 
 UPLOAD_DIR = Path() / 'uploads'
 UPLOAD_DIR.mkdir(exist_ok=True) # Certificar se o diretório de uploads existe
 
-app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=['http://localhost:3000'],
-    allow_credentials=True,
-    allow_methods=['*'],
-    allow_headers=['*'],
-)
+# Configurações do Flask
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Limite de 16 MB
+
+# Função utilitária para leitura de CSV com diferentes codificações
+def read_csv_with_encoding(file_path, encodings=['utf-8', 'latin1', 'iso-8859-1']):
+    for encoding in encodings:
+        try:
+            df = pd.read_csv(file_path, encoding=encoding)
+            logger.info(f"Arquivo lido com sucesso usando codificação: {encoding}")
+            return df
+        except UnicodeDecodeError:
+            logger.warning(f"Erro ao ler o arquivo com codificação: {encoding}")
+    raise ValueError("Não foi possível ler o arquivo com as codificações fornecidas.")
 
 
 
-# Servir arquivos estáticos do diretório de uploads
-app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
+@app.route('/uploadfile', methods=['POST'])
+def upload_file():
+    if 'file_upload' not in request.files:
+        return jsonify({"error": "Nenhum arquivo enviado"}), 400
 
-#A função abaixo será chamada sempre que uma requisição POST for feita para este endpoint
-@app.post('/uploadfile')
-async def create_upload_file(file_upload: UploadFile):
+    file = request.files['file_upload']
+
+    if file.filename == '':
+        return jsonify({"error": "Nenhum arquivo selecionado"}), 400
+
+    if not file.filename.endswith('.csv'):
+        return jsonify({"error": "Formato de arquivo inválido. Apenas .csv é permitido"}), 400
+
     try:
-        data = await file_upload.read()
-        save_to = UPLOAD_DIR / file_upload.filename
-        with open(save_to, 'wb') as f:
-            f.write(data)
-            
-        logger.info(f"Arquivo recebido: {file_upload.filename}")
-        
-        def read_csv_with_encoding(file_path, encodings=['utf-8', 'latin1', 'iso-8859-1']):
-            for encoding in encodings:
-                try:
-                    df = pd.read_csv(file_path, encoding=encoding)
-                    logger.info(f"Arquivo lido com sucesso usando codificação: {encoding}")
-                    return df
-                except UnicodeDecodeError:
-                    logger.warning(f"Erro ao ler o arquivo com codificação: {encoding}")
-            raise ValueError("Não foi possível ler o arquivo com as codificações fornecidas.")        
-        
-        
-        #Definindo a URL dos arquivos que vão ser criados
-        plot_filename_barh = UPLOAD_DIR / 'barh.png'
-        plot_filename_filial = UPLOAD_DIR / 'filial.png'
-        plot_filename_mes = UPLOAD_DIR / 'mes.png'
-        plot_filename_clientes = UPLOAD_DIR / 'clientes.png'
-        plot_filename_pagamento = UPLOAD_DIR / 'pagamento.png'
-        plot_filename_genero = UPLOAD_DIR / 'genero.png'
-        plot_filename_monteCarlo = UPLOAD_DIR / 'monteCarlo.png'
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        logger.info(f"Arquivo recebido: {filename}")
 
-        #Código se o CSV de supermercado for enviado
-        if file_upload.filename == "supermarket_sales - Sheet1.csv":
+        if filename == "supermarket_sales_-_Sheet1.csv":
             isCodigo10MilLinhas = False
-            result = supermercadoKaggle(save_to)
-            df = read_csv_with_encoding(save_to)
-            
+            df = read_csv_with_encoding(file_path)
+            result = {"message": "Dados processados para supermercado"}
             
             df['Date'] = pd.to_datetime(df['Date'])
             df['Mes'] = df['Date'].dt.month
@@ -537,8 +526,7 @@ async def create_upload_file(file_upload: UploadFile):
             # Coluna Nome dos meses
             meses = {1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril', 5: 'Maio', 6: 'Junho', 7: 'Julho', 8: 'Agosto', 9: 'Setembro', 10: 'Outubro', 11: 'Novembro', 12: 'Dezembro'}
             df['Mes_Nome'] = df['Mes'].map(meses)
-
-            #Roda as funções de todos os gráficos
+            
             plot_barh(df, 'Product line', 'Linha dos Produtos', 'Frequência', 'Linha dos produtos mais vendidos', 10, 1, 3.5, UPLOAD_DIR, "barh.png")
             plot_pie(df, 'Branch', 'Frequência da Filial', 1, UPLOAD_DIR, "filial.png")
             plot_pie(df, 'Período', 'Frequência de Perídos do Mês', 1, UPLOAD_DIR, "mes.png")
@@ -546,25 +534,21 @@ async def create_upload_file(file_upload: UploadFile):
             plot_pie(df, "Payment", 'Frequência dos meios de pagamentos', 1, UPLOAD_DIR, "pagamento.png")
             plot_barh(df, 'Gender', 'Tipo de Gênero do Cliente', 'Frequência de gênero', 'Tipo de clientes que mais compram', 20, 1, 2.5, UPLOAD_DIR, "genero.png")
             
-            df = read_csv_with_encoding(save_to)
             monteCarlo(df, UPLOAD_DIR, "monteCarlo.png")
-        
-        #Código se o CSV de 10 mil linhas for enviado
-        elif file_upload.filename == "Cópia de vendas.csv":
+        elif filename == "Cópia de vendas.csv":
             isCodigo10MilLinhas = True
-            result = codigo10MilLinhas(save_to)
-            df = read_csv_with_encoding(save_to)
+            df = read_csv_with_encoding(file_path)
+            result = {"message": "Dados processados para 10 mil linhas"}
             
-            df['Data'] = pd.to_datetime(df['Data'])
-            df['Mes'] = df['Data'].dt.month
-            df['Ano'] = df['Data'].dt.year
-            df['Dia'] = df['Data'].dt.day
+            df['Date'] = pd.to_datetime(df['Date'])
+            df['Mes'] = df['Date'].dt.month
+            df['Ano'] = df['Date'].dt.year
+            df['Dia'] = df['Date'].dt.day
             df['Período'] = df['Dia'].apply(categorizar_dia)
 
             # Coluna Nome dos meses
             meses = {1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril', 5: 'Maio', 6: 'Junho', 7: 'Julho', 8: 'Agosto', 9: 'Setembro', 10: 'Outubro', 11: 'Novembro', 12: 'Dezembro'}
             df['Mes_Nome'] = df['Mes'].map(meses)
-            result = codigo10MilLinhas(save_to)
             
             plot_histogram(df, 'N_PRODUTO', 'Frequência', 'Produtos', 'Distribuição dos Produtos', 20, 10, 0, 2, UPLOAD_DIR, "clientes.png")
             plot_histogram(df, 'N_CATEGORIA', 'Frequência', 'Categorias', 'Distribuição das Categorias', 1, 10, 1, 2, UPLOAD_DIR, "barh.png")
@@ -572,25 +556,36 @@ async def create_upload_file(file_upload: UploadFile):
             plot_barh(df, 'SUPERVISOR', 'Supervisor', 'Frequência', 'Supervisor mais eficiente', 10, 1, 2.8, UPLOAD_DIR, "genero.png")
             plot_barh(df, 'Estado', 'Estado', 'Frequência', 'Estado com mais vendas', 50, 0, 3, UPLOAD_DIR, "filial.png")
             plot_barh(df, 'Mes', 'Mês', 'Frequência', 'Mês com mais vendas', 10, 1, 2, UPLOAD_DIR, "mes.png")
-            
         else:
-            raise HTTPException(status_code=400, detail="Unknown file")
-        
-        logger.info(plot_filename_barh.name)
-        
-        return JSONResponse(content={
-            "filename": file_upload.filename,
-            "result": result,
-            "plot_url": plot_filename_barh.name,
-            "plot_url_clientes": plot_filename_clientes.name,
-            "plot_url_genero": plot_filename_genero.name,
-            "plot_url_filial": plot_filename_filial.name,
-            "plot_url_mes": plot_filename_mes.name,
-            "plot_url_pagamento": plot_filename_pagamento.name,
-            "plot_url_monteCarlo": plot_filename_monteCarlo.name,
-            "isCodigo10MilLinhas": isCodigo10MilLinhas,
-        })
-        
+            return jsonify({"error": "Arquivo desconhecido"}), 400
+
+        return render_template('cliente/predict.html', 
+                                filename=filename,
+                                result=result,
+                                isCodigo10MilLinhas=isCodigo10MilLinhas,
+                                plot_url='barh.png',
+                                plot_url_clientes='clientes.png',
+                                plot_url_genero='genero.png',
+                                plot_url_filial='filial.png',
+                                plot_url_mes='mes.png',
+                                plot_url_pagamento='pagamento.png',
+                                plot_url_monteCarlo='monteCarlo.png')
+
     except Exception as e:
         logger.error(f"Erro ao processar o arquivo: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        return jsonify({"error": str(e)}), 500
+
+
+# Servir arquivos estáticos do diretório de uploads
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    
+
+#Roda as funções de todos os gráficos
+#            plot_barh(df, 'Product line', 'Linha dos Produtos', 'Frequência', 'Linha dos produtos mais vendidos', 10, 1, 3.5, UPLOAD_DIR, "barh.png")
+#            plot_pie(df, 'Branch', 'Frequência da Filial', 1, UPLOAD_DIR, "filial.png")
+#         plot_pie(df, 'Período', 'Frequência de Perídos do Mês', 1, UPLOAD_DIR, "mes.png")
+#          plot_barh(df, 'Customer type', 'Tipo do Cliente', 'Frequência de compra', 'Tipo de clientes que mais compram', 20, 1, 2.5, UPLOAD_DIR, "clientes.png")
+#         plot_pie(df, "Payment", 'Frequência dos meios de pagamentos', 1, UPLOAD_DIR, "pagamento.png")
+#            plot_barh(df, 'Gender', 'Tipo de Gênero do Cliente', 'Frequência de gênero', 'Tipo de clientes que mais compram', 20, 1, 2.5, UPLOAD_DIR, "genero.png")

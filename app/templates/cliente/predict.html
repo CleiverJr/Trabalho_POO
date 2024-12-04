@@ -3,158 +3,66 @@
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/predict.css') }}"> {% endblock %}
 {% block content %}
-<form action="/upload_csv" method="POST" class="d-flex flex-column align-items-center justify-content-center w-100" style="background: transparent;" enctype="multipart/form-data">
-    <label for="fileInput" class="btn UIButton">
-        Selecione o Banco de Dados
-    </label>
-    <input id="fileInput" type="file" class="form-control mt-2 w-25" accept=".csv">
-    <span class="file-name mt-2"></span>
-    <button type="submit" class="btn UIButton mt-3">Analisar</button>
-</form>
+<!-- Formulário de Upload -->
 
-<div id="results" class="resultados mt-4" style="display: none;">
-    <h3>Previsões Futuras</h3>
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr id="tableHeader">
-                <!-- Cabeçalhos dinâmicos -->
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            <!-- Linhas dinâmicas -->
-        </tbody>
-    </table>
+    <form action="/uploadfile" method="POST" class="d-flex flex-column align-items-center justify-content-center w-100" style="background: transparent;" enctype="multipart/form-data">
+        <label for="fileInput" class="btn UIButton">
+            Selecione o Banco de Dados
+        </label>
+        <input id="fileInput" type="file" class="form-control mt-2 w-25" accept=".csv" name="file_upload">
+        <span class="file-name mt-2"></span>
+        <button type="submit" class="btn UIButton mt-3">Analisar</button>
+    </form>
+<!-- Resultados -->
+{% if result %}
 
-    <!-- Gráficos -->
-    <div id="images" class="mt-4" style="display: none;">
-        <img id="plotUrlMonteCarlo" src="" class="img-fluid monteCarlo" alt="Predição Monte Carlo" style="display: none;">
-        <div class="d-flex flex-wrap justify-content-center mt-4">
-            <img id="plotUrl" src="" class="img-fluid grafico" alt="Gráfico de Predição" style="display: none;">
-            <img id="plotUrlGenero" src="" class="img-fluid grafico" alt="Gráfico de Tipo de Gênero" style="display: none;">
-            <img id="plotUrlClientes" src="" class="img-fluid grafico" alt="Gráfico de Tipo de Clientes" style="display: none;">
-            <img id="plotUrlFilial" src="" class="img-fluid grafico" alt="Gráfico Pizza Filial" style="display: none;">
-            <img id="plotUrlMes" src="" class="img-fluid grafico" alt="Gráfico Pizza Mês" style="display: none;">
-            <img id="plotUrlPagamento" src="" class="img-fluid grafico" alt="Gráfico de Tipo de Pagamento" style="display: none;">
-        </div>
+
+<!-- Gráficos -->
+<div class="row mt-5 text-center">
+    {% if plot_url_monteCarlo %}
+    <div class="col-md-12 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_monteCarlo) }}" class="grafico img-fluid" alt="Gráfico de Monte Carlo" style="max-width: 90%">
     </div>
+    {% endif %}
+
+    {% if plot_url %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url) }}" class="grafico img-fluid" alt="Gráfico de Predição">
+    </div>
+    {% endif %}
+    
+    {% if plot_url_genero %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_genero) }}" class="grafico img-fluid" alt="Gráfico de Tipo de Gênero">
+    </div>
+    {% endif %}
+    
+    {% if plot_url_clientes %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_clientes) }}" class="grafico img-fluid" alt="Gráfico de Tipo de Clientes">
+    </div>
+    {% endif %}
+    
+    {% if plot_url_filial %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_filial) }}" class="grafico img-fluid" alt="Gráfico Pizza Filial">
+    </div>
+    {% endif %}
+    
+    {% if plot_url_mes %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_mes) }}" class="grafico img-fluid" alt="Gráfico Pizza Mês">
+    </div>
+    {% endif %}
+    
+    {% if plot_url_pagamento %}
+    <div class="col-md-6 mb-4">
+        <img src="{{ url_for('uploaded_file', filename=plot_url_pagamento) }}" class="grafico img-fluid" alt="Gráfico de Tipo de Pagamento">
+    </div>
+    {% endif %}
 </div>
 
+{% endif %}
 
-{% endblock %}
-{% block script %}
-<script>
-    const fileInput = document.getElementById('fileInput');
-    const fileNameDisplay = document.getElementById('fileName');
-    const analysisForm = document.getElementById('analysisForm');
-    const results = document.getElementById('results');
-    const tableHeader = document.getElementById('tableHeader');
-    const tableBody = document.getElementById('tableBody');
-    const images = document.getElementById('images');
 
-    const plotUrlMonteCarlo = document.getElementById('plotUrlMonteCarlo');
-    const plotUrl = document.getElementById('plotUrl');
-    const plotUrlGenero = document.getElementById('plotUrlGenero');
-    const plotUrlClientes = document.getElementById('plotUrlClientes');
-    const plotUrlFilial = document.getElementById('plotUrlFilial');
-    const plotUrlMes = document.getElementById('plotUrlMes');
-    const plotUrlPagamento = document.getElementById('plotUrlPagamento');
-
-    let isCodigo10MilLinhas = false;
-
-    fileInput.addEventListener('change', () => {
-        if (fileInput.files.length > 0) {
-            fileNameDisplay.textContent = fileInput.files[0].name;
-        } else {
-            fileNameDisplay.textContent = '';
-        }
-    });
-
-    analysisForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const formData = new FormData();
-        formData.append('file_upload', fileInput.files[0]);
-
-        try {
-            const response = await fetch('http://localhost:8000/uploadfile/', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                isCodigo10MilLinhas = result.isCodigo10MilLinhas;
-
-                // Atualiza a tabela
-                updateTable(result.result);
-                // Atualiza os gráficos
-                updateImages(result);
-
-                results.style.display = 'block';
-            } else {
-                console.error('Erro ao fazer upload do arquivo');
-            }
-        } catch (error) {
-            console.error('Erro:', error);
-        }
-    });
-
-    function updateTable(data) {
-        tableHeader.innerHTML = '';
-        tableBody.innerHTML = '';
-
-        if (isCodigo10MilLinhas) {
-            tableHeader.innerHTML = `
-                <th>Data</th>
-                <th>Vendas Previstas (Produto 1)</th>
-            `;
-            data.future_dates_week.forEach((date, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${date}</td>
-                    <td>${data.future_pred_week[index]}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        } else {
-            tableHeader.innerHTML = `
-                <th>Categoria do Produto</th>
-                <th>Vendas Previstas (Próximos 7 Dias)</th>
-            `;
-            Object.entries(data).forEach(([category, values]) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${category}</td>
-                    <td>${values.future_pred_week}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-    }
-
-    function updateImages(result) {
-        images.style.display = 'block';
-
-        plotUrlMonteCarlo.src = `http://localhost:8000/uploads/${result.plot_url_monteCarlo}`;
-        plotUrlMonteCarlo.style.display = result.plot_url_monteCarlo ? 'block' : 'none';
-
-        plotUrl.src = `http://localhost:8000/uploads/${result.plot_url}`;
-        plotUrl.style.display = result.plot_url ? 'block' : 'none';
-
-        plotUrlGenero.src = `http://localhost:8000/uploads/${result.plot_url_genero}`;
-        plotUrlGenero.style.display = result.plot_url_genero ? 'block' : 'none';
-
-        plotUrlClientes.src = `http://localhost:8000/uploads/${result.plot_url_clientes}`;
-        plotUrlClientes.style.display = result.plot_url_clientes ? 'block' : 'none';
-
-        plotUrlFilial.src = `http://localhost:8000/uploads/${result.plot_url_filial}`;
-        plotUrlFilial.style.display = result.plot_url_filial ? 'block' : 'none';
-
-        plotUrlMes.src = `http://localhost:8000/uploads/${result.plot_url_mes}`;
-        plotUrlMes.style.display = result.plot_url_mes ? 'block' : 'none';
-
-        plotUrlPagamento.src = `http://localhost:8000/uploads/${result.plot_url_pagamento}`;
-        plotUrlPagamento.style.display = result.plot_url_pagamento ? 'block' : 'none';
-    }
-</script>
 {% endblock %}

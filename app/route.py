@@ -22,7 +22,6 @@ def login():
     return render_template("login.html")
 
 @app.route("/login", methods=['POST'])
-
 def logincli():
     email = request.form.get('email')  
     password = request.form.get('password')

@@ -14,7 +14,7 @@
         "Duração": "24 meses",
         "Manutenção": "Não",
         "Frequência Atualização": "Trimestral",
-        "Tamanho BD": "100GB",
+        "Tamanho BD": "1000GB",
         "Hospedagem": "Azure"
     }
 }

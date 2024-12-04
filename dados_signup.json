@@ -1,7 +1,7 @@
 [
     {
         "tipo": "Cliente",
-        "clienteNome": "Cleiver Batista da Silva Júnior",
+        "clienteNome": "Cleiver Batista da Silva Junior",
         "clienteEmail": "cleiverbatista@gmail.com",
         "clienteDepartamentos": "fds",
         "clienteReceita": "fds",
@@ -90,5 +90,20 @@
         "clienteCapital": "fsd",
         "clienteSenha": "fds",
         "clienteIndústria": ""
+    },
+    {
+        "tipo": "Cliente",
+        "clienteNome": "Samuel",
+        "clienteEmail": "samuel@gmail.com",
+        "clienteDepartamentos": "Vários",
+        "clienteReceita": "Sonegada",
+        "clienteCnpj": "999999999999",
+        "clienteSede": "Algum lugar",
+        "clienteFuncionarios": "Muitos",
+        "clientePv": "Ser rico",
+        "clienteTelefone": "99999",
+        "clienteIndústria": "Bélica",
+        "clienteCapital": "Muito",
+        "clienteSenha": "Fraca"
     }
 ]
