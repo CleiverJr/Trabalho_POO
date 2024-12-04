@@ -45,5 +45,36 @@
         "funcionarioIdade": "22",
         "funcionarioGrau": "Sênior",
         "funcionarioFormacao": ""
+    },
+    {
+        "tipo": "Funcionario",
+        "funcionarioNome": "Cleiver Batista",
+        "funcionarioEmail": "cleiver@gmail.com",
+        "funcionarioSalario": "Alto",
+        "funcionarioSenha": "forte",
+        "funcionarioCpf": "000.000.000-00",
+        "funcionarioCep": "748522",
+        "funcionarioFormação": "Todas",
+        "funcionarioTipo": "O negativo",
+        "funcionarioTelefone": "40028922",
+        "funcionarioCargo": "Chefe",
+        "funcionarioIdade": "19",
+        "funcionarioGrau": "Só de bike",
+        "funcionarioFormacao": "Todas"
+    },
+    {
+        "tipo": "Cliente",
+        "clienteNome": "Bruno",
+        "clienteEmail": "brunin@gmail.com",
+        "clienteDepartamentos": "2",
+        "clienteReceita": "2000",
+        "clienteCnpj": "1568153251",
+        "clienteSede": "Goiania",
+        "clienteFuncionarios": "Muitos",
+        "clientePv": "Boa",
+        "clienteTelefone": "65558214525",
+        "clienteIndústria": "Sim",
+        "clienteCapital": "1000000",
+        "clienteSenha": "123"
     }
 ]
