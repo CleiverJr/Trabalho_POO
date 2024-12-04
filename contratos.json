@@ -5,7 +5,7 @@
         "Duração": "12 meses",
         "Manutenção": "Sim",
         "Frequência Atualização": "Mensal",
-        "Tamanho BD": "50GB",
+        "Tamanho BD": "500GB",
         "Hospedagem": "AWS"
     },
     "Cliente2": {
