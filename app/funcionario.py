@@ -129,7 +129,7 @@ def update_contract(cliente):
 
 
 
-
+ 
 
 
 
