@@ -208,11 +208,20 @@
         event.preventDefault(); // Evita o envio do formulário convencional
 
         const userType = document.getElementById("userType").value;
+        const identifier = userType === "Cliente"
+            ? document.getElementById("clienteCnpj").value
+            : document.getElementById("funcionarioCpf").value;
+
+        if (!identifier) {
+            alert("Selecione um CPF/CNPJ válido.");
+            return;
+        }
+        
         let userData = {};
 
         if (userType === "Cliente") {
             userData = {
-                clienteCnpj: document.getElementById("identifierSelect").value,
+                clienteCnpj: document.getElementById("clienteCnpj").value,
                 clienteNome: document.getElementById("clienteNome").value,
                 clienteEmail: document.getElementById("clienteEmail").value,
                 clienteDepartamentos: document.getElementById("clienteDepartamentos").value,
@@ -243,7 +252,7 @@
         }
 
         try {
-            const response = await fetch('/update_user_data', {
+            const response = await fetch(`/update_user_data?type=${userType}&id=${identifier}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

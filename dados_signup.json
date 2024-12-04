@@ -17,7 +17,7 @@
     },
     {
         "tipo": "Cliente",
-        "clienteNome": "Bruno Moreira",
+        "clienteNome": "Bruno ",
         "clienteEmail": "bruno@gmail.com",
         "clienteDepartamentos": "3",
         "clienteReceita": "5000",
@@ -32,7 +32,7 @@
     },
     {
         "tipo": "Funcionario",
-        "funcionarioNome": "Afonso",
+        "funcionarioNome": "Bruno",
         "funcionarioEmail": "afonso@gmail.com",
         "funcionarioSalario": "1000",
         "funcionarioSenha": "321",
@@ -43,6 +43,7 @@
         "funcionarioTelefone": "62993242479",
         "funcionarioCargo": "chefe",
         "funcionarioIdade": "22",
-        "funcionarioGrau": "Sênior"
+        "funcionarioGrau": "Sênior",
+        "funcionarioFormacao": ""
     }
 ]

@@ -205,34 +205,38 @@ def update_user_data():
         data = request.get_json()
         user_type = request.args.get('type')
         identifier = request.args.get('id')
-        print(user_type)
-        print(identifier)
 
+        print(f"Tipo de usuário: {user_type}")
+        print(f"Identificador: {identifier}")
+        print(data)
+
+        # Verifica se os parâmetros necessários foram fornecidos
         if not user_type or not identifier:
             return jsonify({"error": "Tipo de usuário ou identificador não fornecido"}), 400
 
-        # Lê o arquivo JSON para encontrar os dados do cliente
+        # Lê o arquivo JSON para encontrar os dados do cliente/funcionário
         with open("dados_signup.json", "r", encoding="utf-8") as arquivo:
             dados = json.load(arquivo)
 
-        # Encontra o cliente e atualiza seus dados
+        # Encontra o cliente/funcionário pelo identificador
         updated = False
         for usuario in dados:
             if (user_type == "Cliente" and usuario.get("clienteCnpj") == identifier) or \
                (user_type == "Funcionario" and usuario.get("funcionarioCpf") == identifier):
-                # Atualiza os dados do cliente
-                usuario.update(data)
+                # Atualiza somente os campos enviados (preserva os existentes)
+                for key, value in data.items():
+                    usuario[key] = value
                 updated = True
                 break
 
         if not updated:
-            return jsonify({"error": "Cliente não encontrado"}), 404
+            return jsonify({"error": f"{user_type} com identificador '{identifier}' não encontrado"}), 404
 
-        # Escreve os dados de volta para o arquivo JSON
+        # Escreve os dados atualizados de volta no arquivo JSON
         with open("dados_signup.json", "w", encoding="utf-8") as arquivo:
             json.dump(dados, arquivo, indent=4, ensure_ascii=False)
 
-        return jsonify({"message": "Dados atualizados com sucesso"}), 200
+        return jsonify({"message": f"{user_type} atualizado com sucesso"}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
